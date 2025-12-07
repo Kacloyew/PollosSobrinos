@@ -25,8 +25,8 @@ public class MenuMySQL {
             System.out.println("3. Lista Clientes");
             System.out.println("4. Lista Proveedores");
             System.out.println("5. Lista pedidos");
-            System.out.println("6.");
-            System.out.println("7.");
+            System.out.println("6.  ");
+            System.out.println("7. ");
             System.out.println("8. Salir");
 
             switch (opc = sc.nextInt()) {
