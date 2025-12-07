@@ -7,7 +7,9 @@ import java.sql.SQLException;
 public class mySQL {
 
     public static Connection conectar() {
+        System.out.println("=====================");
         System.out.println("Conectando con mySQL");
+        System.out.println();
 
         try {
 

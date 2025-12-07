@@ -22,6 +22,7 @@ public class Main {
                     break;
 
                 case 2:
+                    MenuOracle.mostrarMenu();
                     break;
 
                 case 3:
