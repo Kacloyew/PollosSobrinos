@@ -15,7 +15,7 @@ public class Oracle {
 
         Class.forName("oracle.jdbc.driver.OracleDriver");
 
-        Connection conexion = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521/XEPDB1", "system", "1234");
+        Connection conexion = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521/XEPDB1", "SYSDBA", "1234");
         return conexion;
 
     } catch (ClassNotFoundException | SQLException e) {
