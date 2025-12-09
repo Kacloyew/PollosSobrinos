@@ -32,6 +32,7 @@ public class MenuOracle {
             switch (opc = sc.nextInt()) {
 
                 case 1:
+
                     break;
 
                 case 2:

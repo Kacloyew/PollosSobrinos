@@ -32,6 +32,7 @@ public class MenuMySQL {
             switch (opc = sc.nextInt()) {
 
                 case 1:
+
                     listarTablas();
                     break;
 
