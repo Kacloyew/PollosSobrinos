@@ -6,14 +6,12 @@ public class Main {
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
-
-        System.out.println("==============================");
         int opc = 0;
 
-        System.out.println("Seleciona una base de datos: \n1. mySQL \n2. Oracle \n3. Salir del programa");
-
-
         while(opc !=3) {
+
+            System.out.println("==============================");
+            System.out.println("Seleciona una base de datos: \n1. mySQL \n2. Oracle \n3. Salir del programa");
 
             switch (opc = sc.nextInt()){
 

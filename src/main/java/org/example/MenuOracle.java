@@ -27,7 +27,7 @@ public class MenuOracle {
             System.out.println("5. Lista pedidos");
             System.out.println("6.  ");
             System.out.println("7. ");
-            System.out.println("8. Salir");
+            System.out.println("8. Volver al menú principal");
 
             switch (opc = sc.nextInt()) {
 
