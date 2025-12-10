@@ -19,17 +19,18 @@ public class Oracle {
         try {
 
             Reader rutaTable = new FileReader("./Script/Oracle/creationTablesOR.sql");
-            Reader rutaInsert = new FileReader("./Script/Oracle/insertDataTablesOR.sql");
+
             scriptRunner.setAutoCommit(false);
             scriptRunner.runScript(rutaTable);
-            scriptRunner.runScript(rutaInsert);
 
             System.out.println("Script ejecutado");
+
+            conexion.commit();
 
             // "Objects.equireNonNull" simplemente permite que la conexion no pueda ser nula
             desconectar(conexion);
 
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException | SQLException e) {
 
             throw new RuntimeException(e);
 
