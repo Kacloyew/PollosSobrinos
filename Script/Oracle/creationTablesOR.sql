@@ -1,38 +1,43 @@
--- Eliminar tablas en orden inverso
+-- Eliminar tablas en orden inverso (con manejo de errores simplificado)
 BEGIN
-    EXECUTE IMMEDIATE 'DROP TABLE Pedidos CASCADE CONSTRAINTS';
+   EXECUTE IMMEDIATE 'DROP TABLE Pedidos CASCADE CONSTRAINTS';
 EXCEPTION
-    WHEN OTHERS THEN NULL;
+   WHEN OTHERS THEN NULL;
 END;
 /
+
 BEGIN
-    EXECUTE IMMEDIATE 'DROP TABLE Empleados CASCADE CONSTRAINTS';
+   EXECUTE IMMEDIATE 'DROP TABLE Empleados CASCADE CONSTRAINTS';
 EXCEPTION
-    WHEN OTHERS THEN NULL;
+   WHEN OTHERS THEN NULL;
 END;
 /
+
 BEGIN
-    EXECUTE IMMEDIATE 'DROP TABLE Clientes CASCADE CONSTRAINTS';
+   EXECUTE IMMEDIATE 'DROP TABLE Clientes CASCADE CONSTRAINTS';
 EXCEPTION
-    WHEN OTHERS THEN NULL;
+   WHEN OTHERS THEN NULL;
 END;
 /
+
 BEGIN
-    EXECUTE IMMEDIATE 'DROP TABLE Productos CASCADE CONSTRAINTS';
+   EXECUTE IMMEDIATE 'DROP TABLE Productos CASCADE CONSTRAINTS';
 EXCEPTION
-    WHEN OTHERS THEN NULL;
+   WHEN OTHERS THEN NULL;
 END;
 /
+
 BEGIN
-    EXECUTE IMMEDIATE 'DROP TABLE Proveedores CASCADE CONSTRAINTS';
+   EXECUTE IMMEDIATE 'DROP TABLE Proveedores CASCADE CONSTRAINTS';
 EXCEPTION
-    WHEN OTHERS THEN NULL;
+   WHEN OTHERS THEN NULL;
 END;
 /
+
 BEGIN
-    EXECUTE IMMEDIATE 'DROP TABLE Tiendas CASCADE CONSTRAINTS';
+   EXECUTE IMMEDIATE 'DROP TABLE Tiendas CASCADE CONSTRAINTS';
 EXCEPTION
-    WHEN OTHERS THEN NULL;
+   WHEN OTHERS THEN NULL;
 END;
 /
 
@@ -43,7 +48,8 @@ CREATE TABLE Tiendas (
     Direccion VARCHAR2(255),
     Telefono VARCHAR2(20),
     CorreoElectronico VARCHAR2(100)
-);
+)
+/
 
 -- Crear la tabla Proveedores
 CREATE TABLE Proveedores (
@@ -53,9 +59,9 @@ CREATE TABLE Proveedores (
     Telefono VARCHAR2(20),
     CorreoElectronico VARCHAR2(100),
     Direccion VARCHAR2(255),
-    Tienda_ID NUMBER,
-    CONSTRAINT fk_proveedor_tienda FOREIGN KEY (Tienda_ID) REFERENCES Tiendas(Tienda_ID) ON DELETE SET NULL
-);
+    Tienda_ID NUMBER
+)
+/
 
 -- Crear la tabla Productos
 CREATE TABLE Productos (
@@ -63,9 +69,9 @@ CREATE TABLE Productos (
     Nombre VARCHAR2(100) NOT NULL,
     Precio NUMBER(10,2) NOT NULL,
     Stock NUMBER DEFAULT 0,
-    Proveedor_ID NUMBER,
-    CONSTRAINT fk_producto_proveedor FOREIGN KEY (Proveedor_ID) REFERENCES Proveedores(Proveedor_ID) ON DELETE SET NULL
-);
+    Proveedor_ID NUMBER
+)
+/
 
 -- Crear la tabla Clientes
 CREATE TABLE Clientes (
@@ -75,9 +81,9 @@ CREATE TABLE Clientes (
     NIF_NIE VARCHAR2(20) NOT NULL UNIQUE,
     Telefono VARCHAR2(20),
     CorreoElectronico VARCHAR2(100),
-    Tienda_ID NUMBER,
-    CONSTRAINT fk_cliente_tienda FOREIGN KEY (Tienda_ID) REFERENCES Tiendas(Tienda_ID) ON DELETE SET NULL
-);
+    Tienda_ID NUMBER
+)
+/
 
 -- Crear la tabla Empleados
 CREATE TABLE Empleados (
@@ -89,9 +95,9 @@ CREATE TABLE Empleados (
     CorreoElectronico VARCHAR2(100),
     Puesto VARCHAR2(50),
     Salario NUMBER(10,2),
-    Tienda_ID NUMBER,
-    CONSTRAINT fk_empleado_tienda FOREIGN KEY (Tienda_ID) REFERENCES Tiendas(Tienda_ID) ON DELETE SET NULL
-);
+    Tienda_ID NUMBER
+)
+/
 
 -- Crear la tabla Pedidos
 CREATE TABLE Pedidos (
@@ -101,9 +107,47 @@ CREATE TABLE Pedidos (
     Cliente_ID NUMBER,
     Producto_ID NUMBER,
     Fecha_Pedido TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    Cantidad NUMBER DEFAULT 1,
-    CONSTRAINT fk_pedido_empleado FOREIGN KEY (Empleado_ID) REFERENCES Empleados(Empleado_ID) ON DELETE SET NULL,
-    CONSTRAINT fk_pedido_tienda FOREIGN KEY (Tienda_ID) REFERENCES Tiendas(Tienda_ID) ON DELETE SET NULL,
-    CONSTRAINT fk_pedido_cliente FOREIGN KEY (Cliente_ID) REFERENCES Clientes(Cliente_ID) ON DELETE SET NULL,
-    CONSTRAINT fk_pedido_producto FOREIGN KEY (Producto_ID) REFERENCES Productos(Producto_ID) ON DELETE SET NULL
-);
+    Cantidad NUMBER DEFAULT 1
+)
+/
+
+-- Agregar restricciones de claves foráneas DESPUÉS de crear todas las tablas
+ALTER TABLE Proveedores
+ADD CONSTRAINT fk_proveedor_tienda
+FOREIGN KEY (Tienda_ID) REFERENCES Tiendas(Tienda_ID) ON DELETE SET NULL
+/
+
+ALTER TABLE Productos
+ADD CONSTRAINT fk_producto_proveedor
+FOREIGN KEY (Proveedor_ID) REFERENCES Proveedores(Proveedor_ID) ON DELETE SET NULL
+/
+
+ALTER TABLE Clientes
+ADD CONSTRAINT fk_cliente_tienda
+FOREIGN KEY (Tienda_ID) REFERENCES Tiendas(Tienda_ID) ON DELETE SET NULL
+/
+
+ALTER TABLE Empleados
+ADD CONSTRAINT fk_empleado_tienda
+FOREIGN KEY (Tienda_ID) REFERENCES Tiendas(Tienda_ID) ON DELETE SET NULL
+/
+
+ALTER TABLE Pedidos
+ADD CONSTRAINT fk_pedido_empleado
+FOREIGN KEY (Empleado_ID) REFERENCES Empleados(Empleado_ID) ON DELETE SET NULL
+/
+
+ALTER TABLE Pedidos
+ADD CONSTRAINT fk_pedido_tienda
+FOREIGN KEY (Tienda_ID) REFERENCES Tiendas(Tienda_ID) ON DELETE SET NULL
+/
+
+ALTER TABLE Pedidos
+ADD CONSTRAINT fk_pedido_cliente
+FOREIGN KEY (Cliente_ID) REFERENCES Clientes(Cliente_ID) ON DELETE SET NULL
+/
+
+ALTER TABLE Pedidos
+ADD CONSTRAINT fk_pedido_producto
+FOREIGN KEY (Producto_ID) REFERENCES Productos(Producto_ID) ON DELETE SET NULL
+/
