@@ -18,8 +18,8 @@ public class Oracle {
 
         try {
 
-            Reader rutaTable = new FileReader("././Script/creationTablesOR.sql");
-            Reader rutaInsert = new FileReader("././Script/insertDataTablesOR.sql");
+            Reader rutaTable = new FileReader("./Script/Oracle/creationTablesOR.sql");
+            Reader rutaInsert = new FileReader("./Script/Oracle/insertDataTablesOR.sql");
             scriptRunner.setAutoCommit(false);
             scriptRunner.runScript(rutaTable);
             scriptRunner.runScript(rutaInsert);
