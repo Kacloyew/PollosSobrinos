@@ -19,9 +19,27 @@ public class mySQL {
 
         } catch (ClassNotFoundException | SQLException e) {
 
-            // TODO Auto-generated catch block
             e.printStackTrace();
             return null;
+
         }
+
     }
+
+    public static void desconectar(Connection conexion) {
+
+        try {
+
+            System.out.println("=====================");
+            System.out.println("Desconectando de MySQL");
+            conexion.close();
+
+        } catch (SQLException e) {
+
+            throw new RuntimeException(e);
+
+        }
+
+    }
+
 }
