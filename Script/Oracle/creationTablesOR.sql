@@ -125,16 +125,16 @@ INSERT INTO Productos (Producto_ID, Nombre, Precio, Stock, Proveedor_ID) VALUES 
 
 INSERT INTO Clientes (Cliente_ID, Nombre, Apellido, NIF_NIE, Telefono, CorreoElectronico, Tienda_ID) VALUES (1, 'María', 'Rodríguez', '22334455D', '644556677', 'maria.rodriguez@gmail.com', 1);
 INSERT INTO Clientes (Cliente_ID, Nombre, Apellido, NIF_NIE, Telefono, CorreoElectronico, Tienda_ID) VALUES (2, 'Javier', 'Fernández', '33445566E', '655667788', 'javier.fernandez@hotmail.com', 2);
-INSERT INTO Clientes (Cliente_ID, Nombre, Apellido, NIF_NIE, Telefono, CorreoElectronico, Tienda_ID) VALUES (3, 'Sofía', 'García', '44556677F', '666778899', 1);
-INSERT INTO Clientes (Cliente_ID, Nombre, Apellido, NIF_NIE, Telefono, CorreoElectronico, Tienda_ID) VALUES (4, 'Juan', 'Ramón', '54863210Y', '646598725', 2);
-INSERT INTO Clientes (Cliente_ID, Nombre, Apellido, NIF_NIE, Telefono, CorreoElectronico, Tienda_ID) VALUES (5, 'África', 'Lorca', '87413210V', '647852634', 2);
+INSERT INTO Clientes (Cliente_ID, Nombre, Apellido, NIF_NIE, Telefono, CorreoElectronico, Tienda_ID) VALUES (3, 'Sofía', 'García', '44556677F', '666778899', 'sofia.garcia@hotmail.com', 1);
+INSERT INTO Clientes (Cliente_ID, Nombre, Apellido, NIF_NIE, Telefono, CorreoElectronico, Tienda_ID) VALUES (4, 'Juan', 'Ramón', '54863210Y', '646598725','juan.ramon@hotmail.com' , 2);
+INSERT INTO Clientes (Cliente_ID, Nombre, Apellido, NIF_NIE, Telefono, CorreoElectronico, Tienda_ID) VALUES (5, 'África', 'Lorca', '87413210V', '647852634','africa,lorca@hotmail.com' , 2);
 
 INSERT INTO Empleados (Empleado_ID, Nombre, Apellido, NIF_NIE, Telefono, CorreoElectronico, Puesto, Salario, Tienda_ID) VALUES (1, 'Carlos', 'Gómez', '12345678A', '611223344', 'carlos.gomez@pollossobrinos.com', 'Gerente', 2800.00, 1);
 INSERT INTO Empleados (Empleado_ID, Nombre, Apellido, NIF_NIE, Telefono, CorreoElectronico, Puesto, Salario, Tienda_ID) VALUES (2, 'Ana', 'López', '87654321B', '622334455', 'ana.lopez@pollossobrinos.com', 'Cajera', 1800.00, 1);
-INSERT INTO Empleados (Empleado_ID, Nombre, Apellido, NIF_NIE, Telefono, CorreoElectronico, Puesto, Salario, Tienda_ID) VALUES (3, 'Luis', 'Martínez', '11223344C', '633445566', 'Cocinero', 2000.00, 2);
-INSERT INTO Empleados (Empleado_ID, Nombre, Apellido, NIF_NIE, Telefono, CorreoElectronico, Puesto, Salario, Tienda_ID) VALUES (4, 'Sandra', 'Sánchez', '94562145Q', '647856111', 'Cocinero', 2000.00, 1);
-INSERT INTO Empleados (Empleado_ID, Nombre, Apellido, NIF_NIE, Telefono, CorreoElectronico, Puesto, Salario, Tienda_ID) VALUES (5, 'Hugo', 'Diaz', '74532169P', '615645893', 'Cajero', 1800.00, 2);
-INSERT INTO Empleados (Empleado_ID, Nombre, Apellido, NIF_NIE, Telefono, CorreoElectronico, Puesto, Salario, Tienda_ID) VALUES (6, 'Jesus', 'Gonzalez', '47852163N', '657148723', 'Gerente', 2800.00, 2);
+INSERT INTO Empleados (Empleado_ID, Nombre, Apellido, NIF_NIE, Telefono, CorreoElectronico, Puesto, Salario, Tienda_ID) VALUES (3, 'Luis', 'Martínez', '11223344C', '633445566','luis.martinez@hotmail.com' , 'Cocinero', 2000.00, 2);
+INSERT INTO Empleados (Empleado_ID, Nombre, Apellido, NIF_NIE, Telefono, CorreoElectronico, Puesto, Salario, Tienda_ID) VALUES (4, 'Sandra', 'Sánchez', '94562145Q', '647856111','sandra.sanchez@hotmail.com' , 'Cocinero', 2000.00, 1);
+INSERT INTO Empleados (Empleado_ID, Nombre, Apellido, NIF_NIE, Telefono, CorreoElectronico, Puesto, Salario, Tienda_ID) VALUES (5, 'Hugo', 'Diaz', '74532169P', '615645893','hugo.diaz@hotmail.com' , 'Cajero', 1800.00, 2);
+INSERT INTO Empleados (Empleado_ID, Nombre, Apellido, NIF_NIE, Telefono, CorreoElectronico, Puesto, Salario, Tienda_ID) VALUES (6, 'Jesus', 'Gonzalez', '47852163N', '657148723','jesus.gonzalez@hotmail.com' , 'Gerente', 2800.00, 2);
 
 -- 5. CONFIRMAR CAMBIOS
 COMMIT;
