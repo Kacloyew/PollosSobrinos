@@ -20,8 +20,8 @@ public class MenuMySQL {
 
         while (opc !=8) {
             System.out.println("===== Menu MySQL =====");
-            System.out.println("1. Listar Tablas");
-            System.out.println("2.");
+            System.out.println("1. Reinstalar Tablas");
+            System.out.println("2. Listar Tablas");
             System.out.println("3. ");
             System.out.println("4. ");
             System.out.println("5. ");
@@ -33,10 +33,12 @@ public class MenuMySQL {
 
                 case 1:
 
-                    listarTablas();
+                    mySQL.crearTablas();
                     break;
 
                 case 2:
+
+                    listarTablas();
                     break;
 
                 case 3:
