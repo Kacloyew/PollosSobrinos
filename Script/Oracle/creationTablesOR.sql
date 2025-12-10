@@ -1,20 +1,14 @@
 -- ============================================
--- SCRIPT SIMPLIFICADO PARA ORACLE CON SCRIPTRUNNER
+-- SCRIPT COMPATIBLE CON SCRIPTRUNNER
 -- ============================================
 
--- 1. ELIMINAR TABLAS (con manejo simple de errores)
-BEGIN EXECUTE IMMEDIATE 'DROP TABLE Pedidos CASCADE CONSTRAINTS'; EXCEPTION WHEN OTHERS THEN NULL; END;
-/
-BEGIN EXECUTE IMMEDIATE 'DROP TABLE Empleados CASCADE CONSTRAINTS'; EXCEPTION WHEN OTHERS THEN NULL; END;
-/
-BEGIN EXECUTE IMMEDIATE 'DROP TABLE Clientes CASCADE CONSTRAINTS'; EXCEPTION WHEN OTHERS THEN NULL; END;
-/
-BEGIN EXECUTE IMMEDIATE 'DROP TABLE Productos CASCADE CONSTRAINTS'; EXCEPTION WHEN OTHERS THEN NULL; END;
-/
-BEGIN EXECUTE IMMEDIATE 'DROP TABLE Proveedores CASCADE CONSTRAINTS'; EXCEPTION WHEN OTHERS THEN NULL; END;
-/
-BEGIN EXECUTE IMMEDIATE 'DROP TABLE Tiendas CASCADE CONSTRAINTS'; EXCEPTION WHEN OTHERS THEN NULL; END;
-/
+-- 1. ELIMINAR TABLAS (sin PL/SQL)
+DROP TABLE Pedidos CASCADE CONSTRAINTS;
+DROP TABLE Empleados CASCADE CONSTRAINTS;
+DROP TABLE Clientes CASCADE CONSTRAINTS;
+DROP TABLE Productos CASCADE CONSTRAINTS;
+DROP TABLE Proveedores CASCADE CONSTRAINTS;
+DROP TABLE Tiendas CASCADE CONSTRAINTS;
 
 -- 2. CREAR TABLAS
 CREATE TABLE Tiendas (
@@ -76,14 +70,37 @@ CREATE TABLE Pedidos (
 );
 
 -- 3. AGREGAR CLAVES FORÁNEAS
-ALTER TABLE Proveedores ADD CONSTRAINT fk_proveedor_tienda FOREIGN KEY (Tienda_ID) REFERENCES Tiendas(Tienda_ID) ON DELETE SET NULL;
-ALTER TABLE Productos ADD CONSTRAINT fk_producto_proveedor FOREIGN KEY (Proveedor_ID) REFERENCES Proveedores(Proveedor_ID) ON DELETE SET NULL;
-ALTER TABLE Clientes ADD CONSTRAINT fk_cliente_tienda FOREIGN KEY (Tienda_ID) REFERENCES Tiendas(Tienda_ID) ON DELETE SET NULL;
-ALTER TABLE Empleados ADD CONSTRAINT fk_empleado_tienda FOREIGN KEY (Tienda_ID) REFERENCES Tiendas(Tienda_ID) ON DELETE SET NULL;
-ALTER TABLE Pedidos ADD CONSTRAINT fk_pedido_empleado FOREIGN KEY (Empleado_ID) REFERENCES Empleados(Empleado_ID) ON DELETE SET NULL;
-ALTER TABLE Pedidos ADD CONSTRAINT fk_pedido_tienda FOREIGN KEY (Tienda_ID) REFERENCES Tiendas(Tienda_ID) ON DELETE SET NULL;
-ALTER TABLE Pedidos ADD CONSTRAINT fk_pedido_cliente FOREIGN KEY (Cliente_ID) REFERENCES Clientes(Cliente_ID) ON DELETE SET NULL;
-ALTER TABLE Pedidos ADD CONSTRAINT fk_pedido_producto FOREIGN KEY (Producto_ID) REFERENCES Productos(Producto_ID) ON DELETE SET NULL;
+ALTER TABLE Proveedores
+    ADD CONSTRAINT fk_proveedor_tienda
+    FOREIGN KEY (Tienda_ID) REFERENCES Tiendas(Tienda_ID) ON DELETE SET NULL;
+
+ALTER TABLE Productos
+    ADD CONSTRAINT fk_producto_proveedor
+    FOREIGN KEY (Proveedor_ID) REFERENCES Proveedores(Proveedor_ID) ON DELETE SET NULL;
+
+ALTER TABLE Clientes
+    ADD CONSTRAINT fk_cliente_tienda
+    FOREIGN KEY (Tienda_ID) REFERENCES Tiendas(Tienda_ID) ON DELETE SET NULL;
+
+ALTER TABLE Empleados
+    ADD CONSTRAINT fk_empleado_tienda
+    FOREIGN KEY (Tienda_ID) REFERENCES Tiendas(Tienda_ID) ON DELETE SET NULL;
+
+ALTER TABLE Pedidos
+    ADD CONSTRAINT fk_pedido_empleado
+    FOREIGN KEY (Empleado_ID) REFERENCES Empleados(Empleado_ID) ON DELETE SET NULL;
+
+ALTER TABLE Pedidos
+    ADD CONSTRAINT fk_pedido_tienda
+    FOREIGN KEY (Tienda_ID) REFERENCES Tiendas(Tienda_ID) ON DELETE SET NULL;
+
+ALTER TABLE Pedidos
+    ADD CONSTRAINT fk_pedido_cliente
+    FOREIGN KEY (Cliente_ID) REFERENCES Clientes(Cliente_ID) ON DELETE SET NULL;
+
+ALTER TABLE Pedidos
+    ADD CONSTRAINT fk_pedido_producto
+    FOREIGN KEY (Producto_ID) REFERENCES Productos(Producto_ID) ON DELETE SET NULL;
 
 -- 4. INSERTAR DATOS
 INSERT INTO Tiendas (Tienda_ID, Nombre_tienda, Direccion, Telefono, CorreoElectronico) VALUES (1, 'Pollos Sobrinos Centro', 'Calle Mayor 123, Madrid', '910123456', 'centro@pollossobrinos.com');
@@ -108,16 +125,16 @@ INSERT INTO Productos (Producto_ID, Nombre, Precio, Stock, Proveedor_ID) VALUES 
 
 INSERT INTO Clientes (Cliente_ID, Nombre, Apellido, NIF_NIE, Telefono, CorreoElectronico, Tienda_ID) VALUES (1, 'María', 'Rodríguez', '22334455D', '644556677', 'maria.rodriguez@gmail.com', 1);
 INSERT INTO Clientes (Cliente_ID, Nombre, Apellido, NIF_NIE, Telefono, CorreoElectronico, Tienda_ID) VALUES (2, 'Javier', 'Fernández', '33445566E', '655667788', 'javier.fernandez@hotmail.com', 2);
-INSERT INTO Clientes (Cliente_ID, Nombre, Apellido, NIF_NIE, Telefono, CorreoElectronico, Tienda_ID) VALUES (3, 'Sofía', 'García', '44556677F', '666778899', 'sofia.garcia@yahoo.com', 1);
-INSERT INTO Clientes (Cliente_ID, Nombre, Apellido, NIF_NIE, Telefono, CorreoElectronico, Tienda_ID) VALUES (4, 'Juan', 'Ramón', '54863210Y', '646598725', 'juan.ramon@gmail.com', 2);
-INSERT INTO Clientes (Cliente_ID, Nombre, Apellido, NIF_NIE, Telefono, CorreoElectronico, Tienda_ID) VALUES (5, 'África', 'Lorca', '87413210V', '647852634', 'africa.lorca@gmail.com', 2);
+INSERT INTO Clientes (Cliente_ID, Nombre, Apellido, NIF_NIE, Telefono, CorreoElectronico, Tienda_ID) VALUES (3, 'Sofía', 'García', '44556677F', '666778899', 1);
+INSERT INTO Clientes (Cliente_ID, Nombre, Apellido, NIF_NIE, Telefono, CorreoElectronico, Tienda_ID) VALUES (4, 'Juan', 'Ramón', '54863210Y', '646598725', 2);
+INSERT INTO Clientes (Cliente_ID, Nombre, Apellido, NIF_NIE, Telefono, CorreoElectronico, Tienda_ID) VALUES (5, 'África', 'Lorca', '87413210V', '647852634', 2);
 
 INSERT INTO Empleados (Empleado_ID, Nombre, Apellido, NIF_NIE, Telefono, CorreoElectronico, Puesto, Salario, Tienda_ID) VALUES (1, 'Carlos', 'Gómez', '12345678A', '611223344', 'carlos.gomez@pollossobrinos.com', 'Gerente', 2800.00, 1);
 INSERT INTO Empleados (Empleado_ID, Nombre, Apellido, NIF_NIE, Telefono, CorreoElectronico, Puesto, Salario, Tienda_ID) VALUES (2, 'Ana', 'López', '87654321B', '622334455', 'ana.lopez@pollossobrinos.com', 'Cajera', 1800.00, 1);
-INSERT INTO Empleados (Empleado_ID, Nombre, Apellido, NIF_NIE, Telefono, CorreoElectronico, Puesto, Salario, Tienda_ID) VALUES (3, 'Luis', 'Martínez', '11223344C', '633445566', 'luis.martinez@pollossobrinos.com', 'Cocinero', 2000.00, 2);
-INSERT INTO Empleados (Empleado_ID, Nombre, Apellido, NIF_NIE, Telefono, CorreoElectronico, Puesto, Salario, Tienda_ID) VALUES (4, 'Sandra', 'Sánchez', '94562145Q', '647856111', 'sandra.sanchez@gmail.com', 'cocinero', 2000.00, 1);
-INSERT INTO Empleados (Empleado_ID, Nombre, Apellido, NIF_NIE, Telefono, CorreoElectronico, Puesto, Salario, Tienda_ID) VALUES (5, 'Hugo', 'Diaz', '74532169P', '615645893', 'hugo.diaz@gmail.com', 'cajero', 1800.00, 2);
-INSERT INTO Empleados (Empleado_ID, Nombre, Apellido, NIF_NIE, Telefono, CorreoElectronico, Puesto, Salario, Tienda_ID) VALUES (6, 'Jesus', 'Gonzalez', '47852163N', '657148723', 'jesus.gonzalez@gmail.com', 'Gerente', 2800.00, 2);
+INSERT INTO Empleados (Empleado_ID, Nombre, Apellido, NIF_NIE, Telefono, CorreoElectronico, Puesto, Salario, Tienda_ID) VALUES (3, 'Luis', 'Martínez', '11223344C', '633445566', 'Cocinero', 2000.00, 2);
+INSERT INTO Empleados (Empleado_ID, Nombre, Apellido, NIF_NIE, Telefono, CorreoElectronico, Puesto, Salario, Tienda_ID) VALUES (4, 'Sandra', 'Sánchez', '94562145Q', '647856111', 'Cocinero', 2000.00, 1);
+INSERT INTO Empleados (Empleado_ID, Nombre, Apellido, NIF_NIE, Telefono, CorreoElectronico, Puesto, Salario, Tienda_ID) VALUES (5, 'Hugo', 'Diaz', '74532169P', '615645893', 'Cajero', 1800.00, 2);
+INSERT INTO Empleados (Empleado_ID, Nombre, Apellido, NIF_NIE, Telefono, CorreoElectronico, Puesto, Salario, Tienda_ID) VALUES (6, 'Jesus', 'Gonzalez', '47852163N', '657148723', 'Gerente', 2800.00, 2);
 
 -- 5. CONFIRMAR CAMBIOS
 COMMIT;
