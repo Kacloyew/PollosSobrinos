@@ -124,13 +124,15 @@ public class mySQL {
                     System.out.println("**** Tabla Pedidos ****");
 
                     if(!rsPe.next()) {
+
                         System.out.println("No hay pedidos actualmente");
+
                     }
+
                     while (rsPe.next()) {
 
                         System.out.printf("%d, %s, %s %n", rsPe.getInt(1),
                                 rsPe.getString(2), rsPe.getString(3));
-
 
                     }
 
