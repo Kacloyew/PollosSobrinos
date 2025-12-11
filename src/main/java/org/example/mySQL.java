@@ -74,11 +74,12 @@ public class mySQL {
     }
 
     public static Connection conectar() {
-        System.out.println("=====================");
-        System.out.println("Conectando con mySQL");
-        System.out.println();
 
         try {
+
+            System.out.println("=====================");
+            System.out.println("Conectando con mySQL");
+            System.out.println();
 
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost/pollosSobrinos", "root", "");

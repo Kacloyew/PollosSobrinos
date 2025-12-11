@@ -14,11 +14,14 @@ public class MenuOracle {
         Connection conectar = Oracle.conectar();
 
         if (conectar == null) {
+
             System.out.println("Error al conectar con Oracle");
             return;
+
         }
 
         while (opc !=8) {
+
             System.out.println("===== Menu Oracle =====");
             System.out.println("1. Reinstalar Tablas");
             System.out.println("2. Listar Tablas");
@@ -60,7 +63,6 @@ public class MenuOracle {
                     System.out.println("Salir");
                     return;
 
-
                 default:
                     System.out.println("Error, selecciona un número válido");
             }
@@ -77,9 +79,11 @@ public class MenuOracle {
 
         Connection conectar = mySQL.conectar();
 
-        if(conectar == null) {
+        if (conectar == null) {
+
             System.out.println("Error al conectar con Oracle");
             return;
+
         }
 
         while (opc !=7) {
@@ -117,7 +121,9 @@ public class MenuOracle {
 
                 default:
                     System.out.println("Error, selecciona un número válido");
+
             }
+
         }
 
     }

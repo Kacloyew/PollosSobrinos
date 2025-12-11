@@ -13,12 +13,15 @@ public class MenuMySQL {
 
         Connection conectar = mySQL.conectar();
 
-        if(conectar == null) {
+        if (conectar == null) {
+
             System.out.println("Error al conectar con MySQL");
             return;
+
         }
 
         while (opc !=8) {
+
             System.out.println("===== Menu MySQL =====");
             System.out.println("1. Reinstalar Tablas");
             System.out.println("2. Listar Tablas");
@@ -60,12 +63,12 @@ public class MenuMySQL {
                     System.out.println("Salir");
                     return;
 
-
                 default:
                     System.out.println("Error, selecciona un número válido");
-            }
-        }
 
+            }
+
+        }
 
     }
 
@@ -77,12 +80,15 @@ public class MenuMySQL {
 
         Connection conectar = mySQL.conectar();
 
-        if(conectar == null) {
+        if (conectar == null) {
+
             System.out.println("Error al conectar con MySQL");
             return;
+
         }
 
         while (opc !=7) {
+
             System.out.println("===== Menu MySQL =====");
             System.out.println("1. Tiendas");
             System.out.println("2. Empleados");
@@ -117,7 +123,9 @@ public class MenuMySQL {
 
                 default:
                     System.out.println("Error, selecciona un número válido");
+
             }
+
         }
 
     }
