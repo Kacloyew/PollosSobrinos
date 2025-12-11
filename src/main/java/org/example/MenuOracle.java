@@ -20,7 +20,7 @@ public class MenuOracle {
 
         }
 
-        while (opc !=8) {
+        while (opc != 8) {
 
             System.out.println("===== Menu Oracle =====");
             System.out.println("1. Reinstalar Tablas");
@@ -61,6 +61,7 @@ public class MenuOracle {
 
                 case 8:
                     System.out.println("Salir");
+                    Oracle.desconectar(conectar);
                     return;
 
                 default:
@@ -77,16 +78,16 @@ public class MenuOracle {
 
         int opc = 0;
 
-        Connection conectar = mySQL.conectar();
+        Connection conexion = Oracle.conectar();
 
-        if (conectar == null) {
+        if (conexion == null) {
 
             System.out.println("Error al conectar con Oracle");
             return;
 
         }
 
-        while (opc !=7) {
+        while (opc != 7) {
             System.out.println("===== Menu Oracle =====");
             System.out.println("1. Tiendas");
             System.out.println("2. Empleados");
@@ -96,27 +97,17 @@ public class MenuOracle {
             System.out.println("6. Productos");
             System.out.println("7. Salir");
 
+
             switch (opc = sc.nextInt()) {
 
-                case 1:
-                    break;
+                case 1, 2, 3, 4, 5, 6:
 
-                case 2:
-                    break;
+                    Oracle.listarTablasOracle(conexion, opc);
 
-                case 3:
-                    break;
-
-                case 4:
-                    break;
-
-                case 5:
-                    break;
-
-                case 6:
                     break;
 
                 case 7:
+                    System.out.println("**** Retrocediendo ****");
                     break;
 
                 default:
@@ -127,5 +118,4 @@ public class MenuOracle {
         }
 
     }
-
 }
