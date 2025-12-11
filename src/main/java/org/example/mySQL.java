@@ -38,202 +38,88 @@ public class mySQL {
 
     public static void listarTablasMySQL (Connection conexion, int posicion) {
 
+        switch (posicion) {
+
+            case 1:
+
+                imprimirTabla(conexion, "Tiendas", "SELECT * FROM Tiendas;");
+                break;
+
+
+            case 2:
+
+                imprimirTabla(conexion, "Empleados", "SELECT * FROM Empleados;");
+                break;
+
+            case 3:
+
+                imprimirTabla(conexion, "Clientes", "SELECT * FROM Clientes;");
+                break;
+
+            case 4:
+
+                imprimirTabla(conexion, "Proveedores", "SELECT * FROM Proveedores;");
+                break;
+
+
+            case 5:
+
+                imprimirTabla(conexion, "Pedidos", "SELECT * FROM Pedidos;");
+                break;
+
+
+            case 6:
+
+                imprimirTabla(conexion, "Productos", "SELECT * FROM Productos;");
+                break;
+
+            case 7:
+
+                System.out.println("**** Retrocediendo... ****");
+                break;
+
+            default:
+                System.out.println("Error, selecciona un número válido");
+
+        }
+
+    }
+
+    private static void imprimirTabla(Connection conexion, String nombreTabla, String consultaSQL) {
+
+        System.out.printf("**** Tabla %s ****%n", nombreTabla);
+
         try {
 
-            switch (posicion) {
+            Statement stmt = conexion.createStatement();
+            ResultSet rs = stmt.executeQuery(consultaSQL);
 
-                case 1:
+            ResultSetMetaData meta = rs.getMetaData();
+            int columnas = meta.getColumnCount();
 
-                    System.out.println("**** Tabla Tiendas ****");
-                    String sqlTienda = "SELECT * FROM Tiendas;";
-                    Statement stmtT = conexion.createStatement();
-                    ResultSet rsT = stmtT.executeQuery(sqlTienda);
+            // Imprimir nombres de columnas
+            for (int i = 1; i <= columnas; i++) {
+                System.out.printf("%-30s", meta.getColumnName(i));
+            }
+            System.out.println();
 
-                    ResultSetMetaData metaT = rsT.getMetaData();
-                    int columnasT = metaT.getColumnCount();
+            // Imprimir separador
+            for (int i = 1; i <= columnas; i++) {
+                System.out.print("--------------------");
+            }
+            System.out.println();
 
-                    for (int i = 1; i <= columnasT; i++) {
-                        System.out.printf("%-20s", metaT.getColumnName(i));
-                    }
-                    System.out.println();
+            // Imprimir datos
+            while (rs.next()) {
 
-                    for (int i = 1; i <= columnasT; i++) {
-                        System.out.print("--------------------");
-                    }
-                    System.out.println();
-
-                    while (rsT.next()) {
-                        for (int i = 1; i <= columnasT; i++) System.out.printf("%-20s", rsT.getString(i));
-                        System.out.println();
-                    }
-
-                    stmtT.close();
-                    rsT.close();
-                    break;
-
-
-                case 2:
-
-                    System.out.println("**** Tabla Empleados ****");
-                    String sqlEmpleados = "SELECT * FROM Empleados;";
-                    Statement stmtE = conexion.createStatement();
-                    ResultSet rsE = stmtE.executeQuery(sqlEmpleados);
-
-                    ResultSetMetaData metaE = rsE.getMetaData();
-                    int columnasE = metaE.getColumnCount();
-
-                    for (int i = 1; i <= columnasE; i++) {
-                        System.out.printf("%-20s", metaE.getColumnName(i));
-                    }
-                    System.out.println();
-
-                    for (int i = 1; i <= columnasE; i++) {
-                        System.out.print("--------------------");
-                    }
-                    System.out.println();
-
-                    while (rsE.next()) {
-                        for (int i = 1; i <= columnasE; i++) System.out.printf("%-20s", rsE.getString(i));
-                        System.out.println();
-                    }
-
-                    stmtE.close();
-                    rsE.close();
-                    break;
-
-
-                case 3:
-
-                    System.out.println("**** Tabla Clientes ****");
-                    String sqlClientes = "SELECT * FROM Clientes;";
-                    Statement stmtC = conexion.createStatement();
-                    ResultSet rsC = stmtC.executeQuery(sqlClientes);
-
-                    ResultSetMetaData metaC = rsC.getMetaData();
-                    int columnasC = metaC.getColumnCount();
-
-                    for (int i = 1; i <= columnasC; i++) {
-                        System.out.printf("%-20s", metaC.getColumnName(i));
-                    }
-                    System.out.println();
-
-                    for (int i = 1; i <= columnasC; i++) {
-                        System.out.print("--------------------");
-                    }
-                    System.out.println();
-
-                    while (rsC.next()) {
-                        for (int i = 1; i <= columnasC; i++) System.out.printf("%-20s", rsC.getString(i));
-                        System.out.println();
-                    }
-
-                    stmtC.close();
-                    rsC.close();
-                    break;
-
-
-                case 4:
-
-                    System.out.println("**** Tabla Proveedores ****");
-                    String sqlProveedores = "SELECT * FROM Proveedores;";
-                    Statement stmtP = conexion.createStatement();
-                    ResultSet rsP = stmtP.executeQuery(sqlProveedores);
-
-                    ResultSetMetaData metaP = rsP.getMetaData();
-                    int columnasP = metaP.getColumnCount();
-
-                    for (int i = 1; i <= columnasP; i++) {
-                        System.out.printf("%-20s", metaP.getColumnName(i));
-                    }
-                    System.out.println();
-
-                    for (int i = 1; i <= columnasP; i++) {
-                        System.out.print("--------------------");
-                    }
-                    System.out.println();
-
-                    while (rsP.next()) {
-                        for (int i = 1; i <= columnasP; i++) System.out.printf("%-20s", rsP.getString(i));
-                        System.out.println();
-                    }
-
-                    stmtP.close();
-                    rsP.close();
-                    break;
-
-
-                case 5:
-
-                    System.out.println("**** Tabla Pedidos ****");
-                    String sqlPedidos = "SELECT * FROM Pedidos;";
-                    Statement stmtPe = conexion.createStatement();
-                    ResultSet rsPe = stmtPe.executeQuery(sqlPedidos);
-
-                    ResultSetMetaData metaPe = rsPe.getMetaData();
-                    int columnasPe = metaPe.getColumnCount();
-
-                    for (int i = 1; i <= columnasPe; i++) {
-                        System.out.printf("%-20s", metaPe.getColumnName(i));
-                    }
-                    System.out.println();
-
-                    for (int i = 1; i <= columnasPe; i++) {
-                        System.out.print("--------------------");
-                    }
-                    System.out.println();
-
-                    while (rsPe.next()) {
-                        for (int i = 1; i <= columnasPe; i++) System.out.printf("%-20s", rsPe.getString(i));
-                        System.out.println();
-                    }
-
-                    stmtPe.close();
-                    rsPe.close();
-                    break;
-
-
-                case 6:
-
-                    System.out.println("**** Tabla Productos ****");
-                    String sqlProductos = "SELECT * FROM Productos;";
-                    Statement stmtPr = conexion.createStatement();
-                    ResultSet rsPr = stmtPr.executeQuery(sqlProductos);
-
-                    ResultSetMetaData metaPr = rsPr.getMetaData();
-                    int columnasPr = metaPr.getColumnCount();
-
-                    for (int i = 1; i <= columnasPr; i++) {
-                        System.out.printf("%-20s", metaPr.getColumnName(i));
-                    }
-                    System.out.println();
-
-                    for (int i = 1; i <= columnasPr; i++) {
-                        System.out.print("--------------------");
-                    }
-                    System.out.println();
-
-                    while (rsPr.next()) {
-                        for (int i = 1; i <= columnasPr; i++) System.out.printf("%-20s", rsPr.getString(i));
-                        System.out.println();
-                    }
-
-                    stmtPr.close();
-                    rsPr.close();
-                    break;
-
-                case 7:
-
-                    System.out.println("**** Retrocediendo... ****");
-                    break;
-
-                default:
-                    System.out.println("Error, selecciona un número válido");
+                for (int i = 1; i <= columnas; i++) {
+                    System.out.printf("%-30s", rs.getString(i));
+                }
+                System.out.println();
 
             }
 
         } catch (SQLException e) {
-
-            throw new RuntimeException(e);
 
         }
 
