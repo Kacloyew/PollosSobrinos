@@ -20,17 +20,17 @@ public class MenuMySQL {
 
         }
 
-        while (opc !=8) {
+        while (opc !=7) {
 
             System.out.println("===== Menu MySQL =====");
             System.out.println("1. Reinstalar Tablas");
             System.out.println("2. Listar Tablas");
-            System.out.println("3. ");
-            System.out.println("4. ");
-            System.out.println("5. ");
-            System.out.println("6.  ");
-            System.out.println("7. ");
-            System.out.println("8. Volver al menú principal");
+            System.out.println("3. Hacer nuevo pedido");
+            System.out.println("4. Añadir nuevo producto");
+            System.out.println("5. Modificar precio producto");
+            System.out.println("6. Eliminar un artículo (si no está en pedidos)");
+            System.out.println("7. Volver al menú");
+
 
             switch (opc = sc.nextInt()) {
 
@@ -57,9 +57,6 @@ public class MenuMySQL {
                     break;
 
                 case 7:
-                    break;
-
-                case 8:
                     System.out.println("Salir");
                     mySQL.desconectar(conexion);
                     return;
