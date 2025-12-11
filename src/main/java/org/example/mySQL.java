@@ -65,9 +65,47 @@ public class mySQL {
             int clienteId = Integer.parseInt(sc.nextLine());
             pstmt.setInt(3, clienteId);
 
-            // Pedir Producto_ID
-            System.out.print("ID del Producto: ");
-            int productoId = Integer.parseInt(sc.nextLine());
+            // 4. Producto_ID (obligatorio) - ESTE ES EL QUE FALLABA
+            int productoId;
+            while (true) {
+                try {
+                    System.out.print("ID del Producto: ");
+                    productoId = Integer.parseInt(sc.nextLine());
+
+                    // Verificar si el producto existe (ESTA ES LA VALIDACIÓN IMPORTANTE)
+                    try (PreparedStatement checkProducto = conexion.prepareStatement(
+                            "SELECT Producto_ID FROM Productos WHERE Producto_ID = ?")) {
+                        checkProducto.setInt(1, productoId);
+                        ResultSet rs = checkProducto.executeQuery();
+                        if (rs.next()) {
+                            break; // Producto existe
+                        } else {
+                            System.out.println("❌ El Producto_ID " + productoId + " no existe.");
+
+                            // Mostrar productos disponibles para ayudar al usuario
+                            System.out.println("Productos disponibles:");
+                            try (Statement listProd = conexion.createStatement();
+                                 ResultSet productos = listProd.executeQuery(
+                                         "SELECT Producto_ID, Nombre FROM Productos ORDER BY Producto_ID")) {
+
+                                boolean hayProductos = false;
+                                while (productos.next()) {
+                                    System.out.println("   - ID: " + productos.getInt("Producto_ID") +
+                                            ", Nombre: " + productos.getString("Nombre"));
+                                    hayProductos = true;
+                                }
+
+                                if (!hayProductos) {
+                                    System.out.println("   No hay productos registrados en la base de datos.");
+                                }
+                            }
+                            System.out.println("Intenta de nuevo:");
+                        }
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("⚠️  Por favor, ingresa un número válido.");
+                }
+            }
             pstmt.setInt(4, productoId);
 
             // Fecha del Pedido
