@@ -36,12 +36,12 @@ public class MenuMySQL {
 
                 case 1:
 
-                    mySQL.crearTablas();
+                    mySQL.crearTablas(conexion);
                     break;
 
                 case 2:
 
-                    listarTablas();
+                    listarTablas(conexion);
                     break;
 
                 case 3:
@@ -73,13 +73,11 @@ public class MenuMySQL {
 
     }
 
-    private static void listarTablas() {
+    private static void listarTablas(Connection conexion) {
 
         Scanner sc = new Scanner(System.in);
 
         int opc = 0;
-
-        Connection conexion = mySQL.conectar();
 
         if (conexion == null) {
 
