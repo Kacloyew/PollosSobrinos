@@ -28,8 +28,6 @@ public class Oracle {
 
             conexion.commit();
 
-            desconectar(conexion);
-
         } catch (FileNotFoundException | SQLException e) {
 
             throw new RuntimeException(e);
@@ -44,35 +42,35 @@ public class Oracle {
 
             case 1:
 
-                imprimirTabla(conexion, "Tiendas", "SELECT * FROM Tiendas;");
+                imprimirTabla(conexion, "Tiendas", "SELECT * FROM Tiendas");
                 break;
 
 
             case 2:
 
-                imprimirTabla(conexion, "Empleados", "SELECT * FROM Empleados;");
+                imprimirTabla(conexion, "Empleados", "SELECT * FROM Empleados");
                 break;
 
             case 3:
 
-                imprimirTabla(conexion, "Clientes", "SELECT * FROM Clientes;");
+                imprimirTabla(conexion, "Clientes", "SELECT * FROM Clientes");
                 break;
 
             case 4:
 
-                imprimirTabla(conexion, "Proveedores", "SELECT * FROM Proveedores;");
+                imprimirTabla(conexion, "Proveedores", "SELECT * FROM Proveedores");
                 break;
 
 
             case 5:
 
-                imprimirTabla(conexion, "Pedidos", "SELECT * FROM Pedidos;");
+                imprimirTabla(conexion, "Pedidos", "SELECT * FROM Pedidos");
                 break;
 
 
             case 6:
 
-                imprimirTabla(conexion, "Productos", "SELECT * FROM Productos;");
+                imprimirTabla(conexion, "Productos", "SELECT * FROM Productos");
                 break;
 
             case 7:

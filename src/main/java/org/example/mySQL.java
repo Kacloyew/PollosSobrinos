@@ -24,9 +24,6 @@ public class mySQL {
 
             System.out.println("Script ejecutado");
 
-            // "Objects.equireNonNull" simplemente permite que la conexion no pueda ser nula
-            desconectar(conexion);
-
         } catch (FileNotFoundException e) {
 
             throw new RuntimeException(e);
