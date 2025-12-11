@@ -73,8 +73,9 @@ public class mySQL {
                     productoId = Integer.parseInt(sc.nextLine());
 
                     // Verificar si el producto existe (ESTA ES LA VALIDACIÓN IMPORTANTE)
-                    try (PreparedStatement checkProducto = conexion.prepareStatement(
-                            "SELECT Producto_ID FROM Productos WHERE Producto_ID = ?")) {
+                    try {
+
+                        PreparedStatement checkProducto = conexion.prepareStatement("SELECT Producto_ID FROM Productos WHERE Producto_ID = ?");
                         checkProducto.setInt(1, productoId);
                         ResultSet rs = checkProducto.executeQuery();
                         if (rs.next()) {
@@ -101,6 +102,8 @@ public class mySQL {
                             }
                             System.out.println("Intenta de nuevo:");
                         }
+                    } catch (SQLException e) {
+                        System.out.println("⚠️  Por favor, ingresa un número válido.");
                     }
                 } catch (NumberFormatException e) {
                     System.out.println("⚠️  Por favor, ingresa un número válido.");
