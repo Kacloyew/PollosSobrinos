@@ -70,19 +70,23 @@ public class mySQL {
             int productoId = Integer.parseInt(sc.nextLine());
             pstmt.setInt(4, productoId);
 
-            System.out.print("Fecha del pedido (formato: yyyy-MM-dd HH:mm:ss) o Enter para fecha actual: ");
+            // Fecha del Pedido
+            System.out.print("Fecha del pedido (formato: yyyy-MM-dd) o Enter para fecha actual: ");
             String fechaInput = sc.nextLine();
+
             if (!fechaInput.isEmpty()) {
 
-                // Convertir String a Timestamp
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                // Convertir String a Timestamp (solo fecha)
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 Date parsedDate = (Date) dateFormat.parse(fechaInput);
                 Timestamp timestamp = new Timestamp(parsedDate.getTime());
                 pstmt.setTimestamp(5, timestamp);
 
             } else {
+
                 // Usar fecha actual por defecto
                 pstmt.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
+
             }
 
             // Pedir Cantidad
