@@ -78,7 +78,7 @@ public class mySQL {
 
                 // Convertir String a Timestamp (solo fecha)
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                Date parsedDate = (Date) dateFormat.parse(fechaInput);
+                java.util.Date parsedDate = dateFormat.parse(fechaInput);
                 Timestamp timestamp = new Timestamp(parsedDate.getTime());
                 pstmt.setTimestamp(5, timestamp);
 
