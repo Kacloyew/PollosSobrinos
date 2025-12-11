@@ -11,9 +11,9 @@ public class MenuMySQL {
 
         int opc = 0;
 
-        Connection conectar = mySQL.conectar();
+        Connection conexion = mySQL.conectar();
 
-        if (conectar == null) {
+        if (conexion == null) {
 
             System.out.println("Error al conectar con MySQL");
             return;
@@ -61,6 +61,7 @@ public class MenuMySQL {
 
                 case 8:
                     System.out.println("Salir");
+                    mySQL.desconectar(conexion);
                     return;
 
                 default:
@@ -108,7 +109,6 @@ public class MenuMySQL {
                 case 7:
 
                     System.out.println("**** Retrocediendo ****");
-                    mySQL.desconectar(conexion);
                     break;
 
                 default:
