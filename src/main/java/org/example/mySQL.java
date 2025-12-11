@@ -18,9 +18,9 @@ public class mySQL {
         try {
 
             Reader rutaTable = new FileReader("./Script/mySQL/creationTablesSQL.sql");
-            Reader rutaInsert = new FileReader("./Script/mySQL/insertDataTablesSQL.sql");
-            scriptRunner.setAutoCommit(false);
             scriptRunner.runScript(rutaTable);
+
+            Reader rutaInsert = new FileReader("./Script/mySQL/insertDataTablesSQL.sql");
             scriptRunner.runScript(rutaInsert);
 
             System.out.println("Script ejecutado");
