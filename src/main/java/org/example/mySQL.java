@@ -34,139 +34,88 @@ public class mySQL {
 
     public static void listarTablasMySQL (Connection conexion, int posicion) {
 
+        switch (posicion) {
+
+            case 1:
+
+                imprimirTabla(conexion, "Tiendas", "SELECT * FROM Tiendas;");
+                break;
+
+
+            case 2:
+
+                imprimirTabla(conexion, "Empleados", "SELECT * FROM Empleados;");
+                break;
+
+            case 3:
+
+                imprimirTabla(conexion, "Clientes", "SELECT * FROM Clientes;");
+                break;
+
+            case 4:
+
+                imprimirTabla(conexion, "Proveedores", "SELECT * FROM Proveedores;");
+                break;
+
+
+            case 5:
+
+                imprimirTabla(conexion, "Pedidos", "SELECT * FROM Pedidos;");
+                break;
+
+
+            case 6:
+
+                imprimirTabla(conexion, "Productos", "SELECT * FROM Productos;");
+                break;
+
+            case 7:
+
+                System.out.println("**** Retrocediendo... ****");
+                break;
+
+            default:
+                System.out.println("Error, selecciona un número válido");
+
+        }
+
+    }
+
+    private static void imprimirTabla(Connection conexion, String nombreTabla, String consultaSQL) {
+
+        System.out.printf("**** Tabla %s ****%n", nombreTabla);
+
         try {
 
-            switch (posicion) {
+            Statement stmt = conexion.createStatement();
+            ResultSet rs = stmt.executeQuery(consultaSQL);
 
-                case 1:
+            ResultSetMetaData meta = rs.getMetaData();
+            int columnas = meta.getColumnCount();
 
-                    String sqlTienda = "SELECT * FROM Tiendas;";
-                    Statement stmtT = conexion.createStatement();
-                    ResultSet rsT = stmtT.executeQuery(sqlTienda);
+            // Imprimir nombres de columnas
+            for (int i = 1; i <= columnas; i++) {
+                System.out.printf("%-30s", meta.getColumnName(i));
+            }
+            System.out.println();
 
-                    System.out.println("**** Tabla Tienda ****");
-                    while (rsT.next()) {
+            // Imprimir separador
+            for (int i = 1; i <= columnas; i++) {
+                System.out.print("--------------------");
+            }
+            System.out.println();
 
-                        System.out.printf("%d, %s, %s %n", rsT.getInt(1),
-                                rsT.getString(2), rsT.getString(3));
+            // Imprimir datos
+            while (rs.next()) {
 
-                    }
-
-                    stmtT.close();
-                    rsT.close();
-                    break;
-
-                case 2:
-
-                    String sqlEmpleados = "SELECT * FROM Empleados;";
-                    Statement stmtE = conexion.createStatement();
-                    ResultSet rsE = stmtE.executeQuery(sqlEmpleados);
-
-                    System.out.println("**** Tabla Empleados ****");
-                    while (rsE.next()) {
-
-                        System.out.printf("%d, %s, %s %n", rsE.getInt(1),
-                                rsE.getString(2), rsE.getString(3));
-
-                    }
-
-                    stmtE.close();
-                    rsE.close();
-                    break;
-
-                case 3:
-
-                    String sqlClientes = "SELECT * FROM Clientes;";
-                    Statement stmtC = conexion.createStatement();
-                    ResultSet rsC = stmtC.executeQuery(sqlClientes);
-
-                    System.out.println("**** Tabla Clientes ****");
-                    while (rsC.next()) {
-
-                        System.out.printf("%d, %s, %s %n", rsC.getInt(1),
-                                rsC.getString(2), rsC.getString(3));
-
-                    }
-
-                    stmtC.close();
-                    rsC.close();
-                    break;
-
-                case 4:
-
-                    String sqlProveedores = "SELECT * FROM Proveedores;";
-                    Statement stmtP = conexion.createStatement();
-                    ResultSet rsP = stmtP.executeQuery(sqlProveedores);
-
-                    System.out.println("**** Tabla Proveedores ****");
-                    while (rsP.next()) {
-
-                        System.out.printf("%d, %s, %s %n", rsP.getInt(1),
-                                rsP.getString(2), rsP.getString(3));
-
-                    }
-
-                    stmtP.close();
-                    rsP.close();
-                    break;
-
-                case 5:
-
-                    String sqlPedidos = "SELECT * FROM Pedidos;";
-                    Statement stmtPe = conexion.createStatement();
-                    ResultSet rsPe = stmtPe.executeQuery(sqlPedidos);
-
-
-                    System.out.println("**** Tabla Pedidos ****");
-
-                    if(!rsPe.next()) {
-
-                        System.out.println("No hay pedidos actualmente");
-
-                    }
-
-                    while (rsPe.next()) {
-
-                        System.out.printf("%d, %s, %s %n", rsPe.getInt(1),
-                                rsPe.getString(2), rsPe.getString(3));
-
-                    }
-
-                    stmtPe.close();
-                    rsPe.close();
-                    break;
-
-                case 6:
-
-                    String sqlProductos = "SELECT * FROM Productos;";
-                    Statement stmtPr = conexion.createStatement();
-                    ResultSet rsPr = stmtPr.executeQuery(sqlProductos);
-
-                    System.out.println("**** Tabla Productos ****");
-                    while (rsPr.next()) {
-
-                        System.out.printf("%d, %s, %s %n", rsPr.getInt(1),
-                                rsPr.getString(2), rsPr.getString(3));
-
-                    }
-
-                    stmtPr.close();
-                    rsPr.close();
-                    break;
-
-                case 7:
-
-                    System.out.println("**** Retrocediendo... ****");
-                    break;
-
-                default:
-                    System.out.println("Error, selecciona un número válido");
+                for (int i = 1; i <= columnas; i++) {
+                    System.out.printf("%-30s", rs.getString(i));
+                }
+                System.out.println();
 
             }
 
         } catch (SQLException e) {
-
-            throw new RuntimeException(e);
 
         }
 
