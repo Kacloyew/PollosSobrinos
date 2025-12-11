@@ -38,6 +38,41 @@ public class mySQL {
 
     }
 
+    public static void listarTablasMySQL (Connection conexion, int posicion) {
+
+        switch (posicion) {
+
+            case 1:
+
+                String sqlTienda = "SELECT * FROM Tiendas;";
+
+                break;
+
+            case 2:
+                break;
+
+            case 3:
+                break;
+
+            case 4:
+                break;
+
+            case 5:
+                break;
+
+            case 6:
+                break;
+
+            case 7:
+                break;
+
+            default:
+                System.out.println("Error, selecciona un número válido");
+
+        }
+
+    }
+
     public static Connection conectar() {
         System.out.println("=====================");
         System.out.println("Conectando con mySQL");

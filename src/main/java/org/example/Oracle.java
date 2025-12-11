@@ -18,16 +18,18 @@ public class Oracle {
 
         try {
 
+            // Reiniciamos las tablas
             Reader rutaTable = new FileReader("./Script/Oracle/creationTablesOR.sql");
-
-            scriptRunner.setAutoCommit(false);
             scriptRunner.runScript(rutaTable);
 
-            System.out.println("Script ejecutado");
+            // Y luego volvemos a meterles los INSERTs de inicio.
+            Reader rutaInsert = new FileReader("./Script/Oracle/insertDataTablesOR.sql");
+            scriptRunner.runScript(rutaInsert);
+
+            System.out.println("Scripts ejecutados con éxito");
 
             conexion.commit();
 
-            // "Objects.equireNonNull" simplemente permite que la conexion no pueda ser nula
             desconectar(conexion);
 
         } catch (FileNotFoundException | SQLException e) {
@@ -39,20 +41,22 @@ public class Oracle {
     }
 
     public static Connection conectar() {
-        System.out.println("=====================");
-        System.out.println("Conectando con Oracle");
-        System.out.println();
 
          try {
 
-            Class.forName("oracle.jdbc.driver.OracleDriver");
+             System.out.println("=====================");
+             System.out.println("Conectando con Oracle");
+             System.out.println();
 
-            Connection conexion = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521/XE", "system", "1234");
-            return conexion;
+             Class.forName("oracle.jdbc.driver.OracleDriver");
+             Connection conexion = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521/XE", "system", "1234");
+             return conexion;
 
         } catch (ClassNotFoundException | SQLException e) {
+
             e.printStackTrace();
             return null;
+
         }
 
     }
