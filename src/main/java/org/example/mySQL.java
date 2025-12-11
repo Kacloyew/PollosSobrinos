@@ -120,11 +120,17 @@ public class mySQL {
                     Statement stmtPe = conexion.createStatement();
                     ResultSet rsPe = stmtPe.executeQuery(sqlPedidos);
 
-                    System.out.println("**** Tabla Proveedores ****");
+
+                    System.out.println("**** Tabla Pedidos ****");
+
+                    if(!rsPe.next()) {
+                        System.out.println("No hay pedidos actualmente");
+                    }
                     while (rsPe.next()) {
 
                         System.out.printf("%d, %s, %s %n", rsPe.getInt(1),
                                 rsPe.getString(2), rsPe.getString(3));
+
 
                     }
 
@@ -159,8 +165,6 @@ public class mySQL {
                     System.out.println("Error, selecciona un número válido");
 
             }
-
-            desconectar(conexion);
 
         } catch (SQLException e) {
 
