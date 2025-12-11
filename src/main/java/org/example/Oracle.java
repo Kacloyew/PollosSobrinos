@@ -9,9 +9,8 @@ import java.sql.*;
 
 public class Oracle {
 
-    public static void crearTablas () {
+    public static void crearTablas (Connection conexion) {
 
-        Connection conexion = conectar();
         ScriptRunner scriptRunner = new ScriptRunner(conexion);
 
         try {

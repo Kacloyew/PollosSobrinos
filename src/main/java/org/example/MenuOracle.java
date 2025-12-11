@@ -11,9 +11,9 @@ public class MenuOracle {
 
         int opc = 0;
 
-        Connection conectar = Oracle.conectar();
+        Connection conexion = Oracle.conectar();
 
-        if (conectar == null) {
+        if (conexion == null) {
 
             System.out.println("Error al conectar con Oracle");
             return;
@@ -36,12 +36,12 @@ public class MenuOracle {
 
                 case 1:
 
-                    Oracle.crearTablas();
+                    Oracle.crearTablas(conexion);
                     break;
 
                 case 2:
 
-                    listarTablas();
+                    listarTablas(conexion);
                     break;
 
                 case 3:
@@ -61,7 +61,7 @@ public class MenuOracle {
 
                 case 8:
                     System.out.println("Salir");
-                    Oracle.desconectar(conectar);
+                    Oracle.desconectar(conexion);
                     return;
 
                 default:
@@ -72,13 +72,11 @@ public class MenuOracle {
 
     }
 
-    private static void listarTablas() {
+    private static void listarTablas(Connection conexion) {
 
         Scanner sc = new Scanner(System.in);
 
         int opc = 0;
-
-        Connection conexion = Oracle.conectar();
 
         if (conexion == null) {
 
