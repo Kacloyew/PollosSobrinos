@@ -47,6 +47,7 @@ public class mySQL {
             PreparedStatement pstmt = conexion.prepareStatement(sqlPedido);
 
             // Pedimos el ID Empleado
+            System.out.println("=== ID del Empleado ===");
             String empleadoInput = sc.nextLine();
             if (!empleadoInput.isEmpty()) {
                 pstmt.setInt(1, Integer.parseInt(empleadoInput));
