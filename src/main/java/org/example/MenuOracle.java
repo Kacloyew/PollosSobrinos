@@ -109,7 +109,7 @@ public class MenuOracle {
                     break;
 
                 case 3:
-
+                    Oracle.aniadirProductoOracle(conexion);
                     break;
 
                 case 4:

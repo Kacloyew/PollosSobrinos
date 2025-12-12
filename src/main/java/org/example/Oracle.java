@@ -253,6 +253,75 @@ public class Oracle {
         }
     }
 
+    public static void aniadirProductoOracle(Connection conexion) {
+
+        Scanner sc = new Scanner(System.in);
+
+        try {
+
+            System.out.println("=== NUEVO PRODUCTO ===");
+
+            String sqlProducto = "INSERT INTO Productos (Producto_ID, Nombre, Precio, Stock, Proveedor_ID) VALUES (?, ?, ?, ?, ?)";
+
+            PreparedStatement pstmt = conexion.prepareStatement(sqlProducto);
+
+            //pedir producto_ID
+            System.out.println("ID del producto: ");
+            int ID = sc.nextInt();
+            pstmt.setInt(1, ID);
+
+            sc.nextLine();
+            // Pedimos el Nombre
+            System.out.println("Nombre del producto: ");
+            String nombre = sc.nextLine();
+            pstmt.setString(2, nombre);
+
+            // Pedir Precio
+            System.out.print("Precio del producto: ");
+            double precio = sc.nextDouble();
+            pstmt.setDouble(3, precio);
+
+            // Pedir Stock
+            System.out.print("Stock del producto: ");
+            int stock = sc.nextInt();
+            pstmt.setInt(4, stock);
+
+            // Pedir proveedor_ID
+            System.out.print("Pedir proveedor_ID: ");
+            int proveedor_id = sc.nextInt();
+            pstmt.setInt(5, proveedor_id);
+
+            // Confirmar pedido
+            System.out.println("\n--- Resumen del Producto ---");
+            System.out.println("ID del producto: " + ID);
+            System.out.println("Nombre del producto: " + nombre);
+            System.out.println("Precio del producto: " + precio);
+            System.out.println("Stock del producto: " + stock);
+            System.out.println("ID del proveedor: " + proveedor_id);
+
+            System.out.print("\n¿Confirmar producto? (S/N): ");
+            sc.nextLine();
+            String confirmacion = sc.nextLine();
+
+            if (confirmacion.equalsIgnoreCase("S")) {
+
+                int filasAfectadas = pstmt.executeUpdate();
+                System.out.println("Producto insertado correctamente. Filas afectadas: " + filasAfectadas + "\n");
+
+            } else {
+
+                System.out.println("Producto cancelado.");
+
+            }
+
+        } catch (SQLException e) {
+
+            throw new RuntimeException(e);
+
+        }
+
+    }
+
     public static void listarTablasOracle (Connection conexion, int posicion) {
 
         switch (posicion) {
