@@ -25,11 +25,14 @@ public class MenuMySQL {
             System.out.println("===== Menu MySQL =====");
             System.out.println("1. Reinstalar Tablas");
             System.out.println("2. Listar Tablas");
-            System.out.println("3. Hacer nuevo pedido");
-            System.out.println("4. Añadir nuevo producto");
-            System.out.println("5. Modificar precio producto");
-            System.out.println("6. Eliminar un artículo (si no está en pedidos)");
-            System.out.println("7. Volver al menú");
+            System.out.println("3. Añadir nuevo pedido");
+            System.out.println("4. Añadir nuevo cliente");
+            System.out.println("5. Añadir nuevo producto");
+            System.out.println("6. Modificar precio producto");
+            System.out.println("7. Buscar producto por ID_Proveedor");
+            System.out.println("8. Eliminar un producto (si no está en pedidos)");
+            System.out.println("9. Actualizar salario de empleado por ID_Empleado");
+            System.out.println("0. Volver al menú");
 
 
             switch (opc = sc.nextInt()) {
@@ -45,6 +48,8 @@ public class MenuMySQL {
                     break;
 
                 case 3:
+
+                    mySQL.hacerPedidoMySQL(conexion);
                     break;
 
                 case 4:
@@ -57,6 +62,15 @@ public class MenuMySQL {
                     break;
 
                 case 7:
+                    break;
+
+                case 8:
+                    break;
+
+                case 9:
+                    break;
+
+                case 0:
                     System.out.println("Salir");
                     mySQL.desconectar(conexion);
                     return;
