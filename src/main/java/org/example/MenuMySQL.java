@@ -86,7 +86,7 @@ public class MenuMySQL {
 
         }
 
-        while (opc != 7) {
+        while (opc != 8) {
             System.out.println("===== Menu MySQL =====");
             System.out.println("1. Añadir nuevo pedido");
             System.out.println("2. Añadir nuevo cliente");
