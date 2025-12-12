@@ -164,6 +164,95 @@ public class Oracle {
 
     }
 
+    public static void aniadirClienteOracle(Connection conexion) {
+
+        Scanner sc = new Scanner(System.in);
+
+        try {
+
+            System.out.println("=== NUEVO CLIENTE ===");
+
+            String sqlCliente = "INSERT INTO Clientes (Cliente_ID, Nombre, Apellido, NIF_NIE, Telefono, CorreoElectronico, Tienda_ID) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+            PreparedStatement pstmt = conexion.prepareStatement(sqlCliente);
+
+            //Pedir ID Cliente
+
+            System.out.println("ID Cliente: ");
+            String id_cliente = sc.nextLine();
+            pstmt.setString(1, id_cliente);
+
+            // Pedir Nombre Cliente
+            System.out.print("Nombre del Cliente: ");
+            String nombreCliente = sc.nextLine();
+            pstmt.setString(2, nombreCliente);
+
+            // Pedir Apellido Cliente
+            System.out.print("Apellido del Cliente: ");
+            String apellidoCliente = sc.nextLine();
+            pstmt.setString(3, apellidoCliente);
+
+            //Pedir NIF/NIE del cliente
+            System.out.print("NIF/NIE del Cliente: ");
+            String NIF_NIECliente = sc.nextLine();
+            pstmt.setString(4, NIF_NIECliente);
+
+            //Pedir teléfono del cliente
+            String telefono;
+            while (true) {
+
+                System.out.print("Teléfono del cliente: ");
+                telefono = sc.nextLine();
+
+                if (telefono.length() != 11) {
+
+                    break;
+
+                }
+
+            }
+            pstmt.setString(5, telefono);
+
+            //Pedir Correo
+            System.out.print("Correo del cliente: ");
+            String correoElectronicoCliente = sc.nextLine();
+            pstmt.setString(6, correoElectronicoCliente);
+
+            //Pedir ID de tienda
+            System.out.print("Tienda del cliente: ");
+            int id_Tienda = Integer.parseInt(sc.nextLine());
+            pstmt.setInt(7, id_Tienda);
+
+
+            //Confirmar añadir cliente
+            System.out.println("\n--- Resumen del nuevo Cliente ---");
+            System.out.println("Nombre: " + nombreCliente);
+            System.out.println("Apellido: " + apellidoCliente);
+            System.out.println("NIF/NIE: " + NIF_NIECliente);
+            System.out.println("Teléfono: " + telefono);
+            System.out.println("Correo Electronico: " + correoElectronicoCliente);
+            System.out.println("Tienda del nuevo Cliente: " + id_Tienda);
+
+            System.out.print("\n¿Confirmar nuevo Cliente? (S/N): ");
+            String confirmacion = sc.nextLine();
+
+            if (confirmacion.equalsIgnoreCase("S")) {
+
+                int filasAfectadas = pstmt.executeUpdate();
+                System.out.println("Cliente insertado correctamente. Filas afectadas: " + filasAfectadas + "\n");
+
+            } else {
+
+                System.out.println("Cliente cancelado.");
+
+            }
+
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static void listarTablasOracle (Connection conexion, int posicion) {
 
         switch (posicion) {

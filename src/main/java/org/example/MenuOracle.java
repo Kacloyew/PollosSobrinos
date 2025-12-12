@@ -102,11 +102,10 @@ public class MenuOracle {
 
                 case 1:
                     Oracle.aniadirPedidoOracle(conexion);
-
                     break;
 
                 case 2:
-
+                    Oracle.aniadirClienteOracle(conexion);
                     break;
 
                 case 3:
