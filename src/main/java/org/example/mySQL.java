@@ -49,11 +49,8 @@ public class mySQL {
             // Pedimos el ID Empleado
             System.out.println("=== ID del Empleado ===");
             String empleadoInput = sc.nextLine();
-            if (!empleadoInput.isEmpty()) {
-                pstmt.setInt(1, Integer.parseInt(empleadoInput));
-            } else {
-                pstmt.setNull(1, Types.INTEGER);
-            }
+            pstmt.setInt(1, Integer.parseInt(empleadoInput));
+
 
             // Pedir Tienda_ID
             System.out.print("ID de la Tienda: ");
@@ -65,49 +62,46 @@ public class mySQL {
             int clienteId = Integer.parseInt(sc.nextLine());
             pstmt.setInt(3, clienteId);
 
-            // 4. Producto_ID (obligatorio) - ESTE ES EL QUE FALLABA
+            // Pedir Producto_ID
             int productoId;
             while (true) {
-                try {
-                    System.out.print("ID del Producto: ");
-                    productoId = Integer.parseInt(sc.nextLine());
 
-                    // Verificar si el producto existe (ESTA ES LA VALIDACIÓN IMPORTANTE)
-                    try {
+                System.out.print("ID del Producto: ");
+                productoId = Integer.parseInt(sc.nextLine());
 
-                        PreparedStatement checkProducto = conexion.prepareStatement("SELECT Producto_ID FROM Productos WHERE Producto_ID = ?");
-                        checkProducto.setInt(1, productoId);
-                        ResultSet rs = checkProducto.executeQuery();
-                        if (rs.next()) {
-                            break; // Producto existe
-                        } else {
-                            System.out.println("❌ El Producto_ID " + productoId + " no existe.");
+                // Verificar si el producto existe (ESTA ES LA VALIDACIÓN IMPORTANTE)
+                PreparedStatement checkProducto = conexion.prepareStatement("SELECT Producto_ID FROM Productos WHERE Producto_ID = ?");
+                checkProducto.setInt(1, productoId);
+                ResultSet rs = checkProducto.executeQuery();
 
-                            // Mostrar productos disponibles para ayudar al usuario
-                            System.out.println("Productos disponibles:");
-                            try (Statement listProd = conexion.createStatement();
-                                 ResultSet productos = listProd.executeQuery(
-                                         "SELECT Producto_ID, Nombre FROM Productos ORDER BY Producto_ID")) {
+                if (rs.next()) {
 
-                                boolean hayProductos = false;
-                                while (productos.next()) {
-                                    System.out.println("   - ID: " + productos.getInt("Producto_ID") +
-                                            ", Nombre: " + productos.getString("Nombre"));
-                                    hayProductos = true;
-                                }
+                    break; // Producto existe
 
-                                if (!hayProductos) {
-                                    System.out.println("   No hay productos registrados en la base de datos.");
-                                }
-                            }
-                            System.out.println("Intenta de nuevo:");
-                        }
-                    } catch (SQLException e) {
-                        System.out.println("⚠️  Por favor, ingresa un número válido.");
+                } else {
+
+                    System.out.println("El Producto_ID " + productoId + " no existe.");
+
+                    // Mostrar productos disponibles para ayudar al usuario
+                    System.out.println("Productos disponibles:");
+
+                    Statement listProd = conexion.createStatement();
+                    ResultSet productos = listProd.executeQuery("SELECT Producto_ID, Nombre FROM Productos ORDER BY Producto_ID");
+
+                    boolean hayProductos = false;
+                    while (productos.next()) {
+                        System.out.println("   - ID: " + productos.getInt("Producto_ID") + ", Nombre: " + productos.getString("Nombre"));
+                        hayProductos = true;
                     }
-                } catch (NumberFormatException e) {
-                    System.out.println("⚠️  Por favor, ingresa un número válido.");
+
+                    if (!hayProductos) {
+                        System.out.println("   No hay productos registrados en la base de datos.");
+                    }
+
+                    System.out.println("Intenta de nuevo:");
+
                 }
+
             }
             pstmt.setInt(4, productoId);
 
@@ -152,10 +146,14 @@ public class mySQL {
             String confirmacion = sc.nextLine();
 
             if (confirmacion.equalsIgnoreCase("S")) {
+
                 int filasAfectadas = pstmt.executeUpdate();
-                System.out.println("✅ Pedido insertado correctamente. Filas afectadas: " + filasAfectadas);
+                System.out.println("Pedido insertado correctamente. Filas afectadas: " + filasAfectadas);
+
             } else {
-                System.out.println("❌ Pedido cancelado.");
+
+                System.out.println("Pedido cancelado.");
+
             }
 
         } catch (SQLException | ParseException e) {
