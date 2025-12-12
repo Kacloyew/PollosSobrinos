@@ -20,6 +20,7 @@ public class MenuOracle {
 
         }
 
+
         while (opc != 0) {
 
             System.out.println("===== Menu Oracle =====");
