@@ -13,6 +13,7 @@ public class Oracle {
 
         ScriptRunner scriptRunner = new ScriptRunner(conexion);
 
+
         try {
 
             // Reiniciamos las tablas
