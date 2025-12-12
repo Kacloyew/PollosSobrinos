@@ -167,7 +167,7 @@ public class mySQL {
 
             System.out.println("=== NUEVO CLIENTE ===");
 
-            String sqlCliente = "INSERT INTO Pedidos (Nombre, Apellido, NIF_NIE, Telefono, CorreoElectronico, Tienda_ID) VALUES (?, ?, ?, ?, ?, ?)";
+            String sqlCliente = "INSERT INTO Clientes (Nombre, Apellido, NIF_NIE, Telefono, CorreoElectronico, Tienda_ID) VALUES (?, ?, ?, ?, ?, ?)";
 
             PreparedStatement pstmt = conexion.prepareStatement(sqlCliente);
 
@@ -208,7 +208,7 @@ public class mySQL {
             pstmt.setString(5, correo);
 
             // Pedir Tienda_ID
-            System.out.print("Correo del cliente: ");
+            System.out.print("Pedir Tienda del cliente: ");
             int tienda_id = sc.nextInt();
             pstmt.setInt(6, tienda_id);
 
@@ -222,6 +222,7 @@ public class mySQL {
             System.out.println("Tienda ID: " + tienda_id);
 
             System.out.print("\n¿Confirmar cliente? (S/N): ");
+            sc.nextLine();
             String confirmacion = sc.nextLine();
 
             if (confirmacion.equalsIgnoreCase("S")) {
@@ -270,8 +271,8 @@ public class mySQL {
             int stock = sc.nextInt();
             pstmt.setInt(3, stock);
 
-            // Pedir Stock
-            System.out.print("Stock del producto: ");
+            // Pedir proveedor_ID
+            System.out.print("Pedir proveedor_ID: ");
             int proveedor_id = sc.nextInt();
             pstmt.setInt(4, proveedor_id);
 
@@ -283,6 +284,7 @@ public class mySQL {
             System.out.println("ID del proveedor: " + proveedor_id);
 
             System.out.print("\n¿Confirmar producto? (S/N): ");
+            sc.nextLine();
             String confirmacion = sc.nextLine();
 
             if (confirmacion.equalsIgnoreCase("S")) {
