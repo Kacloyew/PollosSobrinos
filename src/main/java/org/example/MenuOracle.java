@@ -29,8 +29,9 @@ public class MenuOracle {
             System.out.println("4. Añadir nuevo cliente");
             System.out.println("5. Añadir nuevo producto");
             System.out.println("6. Modificar precio producto");
-            System.out.println("7. Eliminar un artículo (si no está en pedidos)");
-
+            System.out.println("7. Buscar producto por Proveedor_ID");
+            System.out.println("8. Eliminar un artículo (si no está en pedidos)");
+            System.out.println("9. Actualizar salario de empleado por ID_Empleado");
             System.out.println("0. Volver al menú");
 
             switch (opc = sc.nextInt()) {
@@ -58,6 +59,12 @@ public class MenuOracle {
                     break;
 
                 case 7:
+                    break;
+
+                case 8:
+                    break;
+
+                case 9:
                     break;
 
                 case 0:

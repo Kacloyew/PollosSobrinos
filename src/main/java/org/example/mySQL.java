@@ -6,6 +6,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.Reader;
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Scanner;
 
 public class mySQL {
 
@@ -24,6 +27,138 @@ public class mySQL {
             System.out.println("Script ejecutado");
 
         } catch (FileNotFoundException e) {
+
+            throw new RuntimeException(e);
+
+        }
+
+    }
+
+    public static void hacerPedidoMySQL(Connection conexion) {
+
+        Scanner sc = new Scanner(System.in);
+
+        try {
+
+            System.out.println("=== NUEVO PEDIDO ===");
+
+            String sqlPedido = "INSERT INTO Pedidos (Empleado_ID, Tienda_ID, Cliente_ID, Producto_ID, Fecha_Pedido, Cantidad) VALUES (?, ?, ?, ?, ?, ?)";
+
+            PreparedStatement pstmt = conexion.prepareStatement(sqlPedido);
+
+            // Pedimos el ID Empleado
+            System.out.println("=== ID del Empleado ===");
+            String empleadoInput = sc.nextLine();
+            if (!empleadoInput.isEmpty()) {
+                pstmt.setInt(1, Integer.parseInt(empleadoInput));
+            } else {
+                pstmt.setNull(1, Types.INTEGER);
+            }
+
+            // Pedir Tienda_ID
+            System.out.print("ID de la Tienda: ");
+            int tiendaId = Integer.parseInt(sc.nextLine());
+            pstmt.setInt(2, tiendaId);
+
+            // Pedir Cliente_ID
+            System.out.print("ID del Cliente: ");
+            int clienteId = Integer.parseInt(sc.nextLine());
+            pstmt.setInt(3, clienteId);
+
+            // 4. Producto_ID (obligatorio) - ESTE ES EL QUE FALLABA
+            int productoId;
+            while (true) {
+                try {
+                    System.out.print("ID del Producto: ");
+                    productoId = Integer.parseInt(sc.nextLine());
+
+                    // Verificar si el producto existe (ESTA ES LA VALIDACIÓN IMPORTANTE)
+                    try {
+
+                        PreparedStatement checkProducto = conexion.prepareStatement("SELECT Producto_ID FROM Productos WHERE Producto_ID = ?");
+                        checkProducto.setInt(1, productoId);
+                        ResultSet rs = checkProducto.executeQuery();
+                        if (rs.next()) {
+                            break; // Producto existe
+                        } else {
+                            System.out.println("❌ El Producto_ID " + productoId + " no existe.");
+
+                            // Mostrar productos disponibles para ayudar al usuario
+                            System.out.println("Productos disponibles:");
+                            try (Statement listProd = conexion.createStatement();
+                                 ResultSet productos = listProd.executeQuery(
+                                         "SELECT Producto_ID, Nombre FROM Productos ORDER BY Producto_ID")) {
+
+                                boolean hayProductos = false;
+                                while (productos.next()) {
+                                    System.out.println("   - ID: " + productos.getInt("Producto_ID") +
+                                            ", Nombre: " + productos.getString("Nombre"));
+                                    hayProductos = true;
+                                }
+
+                                if (!hayProductos) {
+                                    System.out.println("   No hay productos registrados en la base de datos.");
+                                }
+                            }
+                            System.out.println("Intenta de nuevo:");
+                        }
+                    } catch (SQLException e) {
+                        System.out.println("⚠️  Por favor, ingresa un número válido.");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("⚠️  Por favor, ingresa un número válido.");
+                }
+            }
+            pstmt.setInt(4, productoId);
+
+            // Fecha del Pedido
+            System.out.print("Fecha del pedido (formato: yyyy-MM-dd) o Enter para fecha actual: ");
+            String fechaInput = sc.nextLine();
+
+            if (!fechaInput.isEmpty()) {
+
+                // Convertir String a Timestamp (solo fecha)
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                java.util.Date parsedDate = dateFormat.parse(fechaInput);
+                Timestamp timestamp = new Timestamp(parsedDate.getTime());
+                pstmt.setTimestamp(5, timestamp);
+
+            } else {
+
+                // Usar fecha actual por defecto
+                pstmt.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
+
+            }
+
+            // Pedir Cantidad
+            System.out.print("Cantidad (presiona Enter para 1): ");
+            String cantidadInput = sc.nextLine();
+            if (!cantidadInput.isEmpty()) {
+                pstmt.setInt(6, Integer.parseInt(cantidadInput));
+            } else {
+                pstmt.setInt(6, 1); // Valor por defecto
+            }
+
+            // Confirmar pedido
+            System.out.println("\n--- Resumen del Pedido ---");
+            System.out.println("Empleado ID: " + (empleadoInput.isEmpty() ? "NULL" : empleadoInput));
+            System.out.println("Tienda ID: " + tiendaId);
+            System.out.println("Cliente ID: " + clienteId);
+            System.out.println("Producto ID: " + productoId);
+            System.out.println("Fecha: " + (fechaInput.isEmpty() ? "Actual" : fechaInput));
+            System.out.println("Cantidad: " + (cantidadInput.isEmpty() ? "1" : cantidadInput));
+
+            System.out.print("\n¿Confirmar pedido? (S/N): ");
+            String confirmacion = sc.nextLine();
+
+            if (confirmacion.equalsIgnoreCase("S")) {
+                int filasAfectadas = pstmt.executeUpdate();
+                System.out.println("✅ Pedido insertado correctamente. Filas afectadas: " + filasAfectadas);
+            } else {
+                System.out.println("❌ Pedido cancelado.");
+            }
+
+        } catch (SQLException | ParseException e) {
 
             throw new RuntimeException(e);
 
