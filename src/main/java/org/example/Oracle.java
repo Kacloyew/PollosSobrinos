@@ -124,7 +124,30 @@ public class Oracle {
 
     }
 
-    public static void nuevoProducto(Connection conexion, String nombreTabla, String consultaSQL) {
+    public static void nuevoProducto(Connection conexion, String nombreTabl, String consultaSQL) {
+
+        try {
+            //crear Statement para ejecutar consulta
+            Statement stmt = conexion.createStatement();
+
+            //realizar consulta para obetener registros de tablas
+            ResultSet rs = stmt.executeQuery(consultaSQL);
+
+            // obtener metada de las columnas
+            ResultSetMetaData meta = rs.getMetaData();
+            int columnas = meta.getColumnCount();
+
+            System.out.println();
+
+
+
+
+
+        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+        }
+
+
 
 
     }
