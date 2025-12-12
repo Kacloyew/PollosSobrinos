@@ -439,6 +439,109 @@ public class Oracle {
 
     }
 
+    public static void metadatosOracle(Connection conexion) {
+
+        try {
+            DatabaseMetaData meta = conexion.getMetaData();
+
+            System.out.println("=== INFORMACIÓN GENERAL ORACLE ===");
+            System.out.println("Nombre BD: " + meta.getDatabaseProductName());
+            System.out.println("Driver: " + meta.getDriverName());
+            System.out.println("URL: " + meta.getURL());
+            System.out.println("Usuario: " + meta.getUserName());
+            System.out.println();
+
+            String catalog = null;
+            String schema = meta.getUserName().toUpperCase();  // muy importante
+
+            System.out.println("=== TABLAS DEL ESQUEMA " + schema + " ===");
+
+            try (ResultSet tablas = meta.getTables(catalog, schema, "%", new String[]{"TABLE"})) {
+
+                while (tablas.next()) {
+
+                    String tabla = tablas.getString("TABLE_NAME");
+                    System.out.println("\nTABLA: " + tabla);
+
+                    // ----------------------------
+                    // COLUMNAS
+                    // ----------------------------
+                    System.out.println(" - Columnas:");
+                    try (ResultSet cols = meta.getColumns(catalog, schema, tabla, "%")) {
+
+                        while (cols.next()) {
+                            System.out.printf(
+                                    "   %s | %s | Tamaño=%d | Null=%s%n",
+                                    cols.getString("COLUMN_NAME"),
+                                    cols.getString("TYPE_NAME"),
+                                    cols.getInt("COLUMN_SIZE"),
+                                    cols.getString("IS_NULLABLE")
+                            );
+                        }
+                    }
+
+                    // ----------------------------
+                    // PRIMARY KEY
+                    // ----------------------------
+                    System.out.println(" - Clave primaria:");
+                    boolean tienePK = false;
+
+                    try (ResultSet pk = meta.getPrimaryKeys(catalog, schema, tabla)) {
+                        while (pk.next()) {
+                            System.out.println("   " + pk.getString("COLUMN_NAME"));
+                            tienePK = true;
+                        }
+                    }
+                    if (!tienePK) System.out.println("   (no tiene PK)");
+
+                    // ----------------------------
+                    // FOREIGN KEYS IMPORTADAS
+                    // ----------------------------
+                    System.out.println(" - FKs importadas:");
+                    boolean tieneFKimp = false;
+
+                    try (ResultSet fkImp = meta.getImportedKeys(catalog, schema, tabla)) {
+                        while (fkImp.next()) {
+                            System.out.printf(
+                                    "   %s → %s(%s)%n",
+                                    fkImp.getString("FKCOLUMN_NAME"),
+                                    fkImp.getString("PKTABLE_NAME"),
+                                    fkImp.getString("PKCOLUMN_NAME")
+                            );
+                            tieneFKimp = true;
+                        }
+                    }
+                    if (!tieneFKimp) System.out.println("   (ninguna)");
+
+                    // ----------------------------
+                    // FOREIGN KEYS EXPORTADAS
+                    // ----------------------------
+                    System.out.println(" - FKs exportadas:");
+                    boolean tieneFKexp = false;
+
+                    try (ResultSet fkExp = meta.getExportedKeys(catalog, schema, tabla)) {
+                        while (fkExp.next()) {
+                            System.out.printf(
+                                    "   %s(%s) ← %s%n",
+                                    fkExp.getString("PKTABLE_NAME"),
+                                    fkExp.getString("PKCOLUMN_NAME"),
+                                    fkExp.getString("FKTABLE_NAME")
+                            );
+                            tieneFKexp = true;
+                        }
+                    }
+                    if (!tieneFKexp) System.out.println("   (ninguna)");
+                }
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+
+
     public static Connection conectar() {
 
          try {

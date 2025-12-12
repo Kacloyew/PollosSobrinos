@@ -48,6 +48,7 @@ public class MenuOracle {
                     break;
 
                 case 4:
+                    metadatosOracle(conexion);
                     break;
 
                 case 6:
@@ -184,6 +185,43 @@ public class MenuOracle {
 
         }
 
+    }
+    public static void metadatosOracle(Connection conexion) {
+
+        Scanner sc = new Scanner(System.in);
+        int opc = 0;
+
+        if (conexion == null) {
+            System.out.println("Error al conectar con Oracle");
+        }
+
+        while (opc != 7) {
+
+            System.out.println("===== Metadatos Oracle =====");
+
+            System.out.println("1. Metadatos generales de Oracle");
+            System.out.println("2. Metadatos ResultSet");
+            System.out.println("3. Volver");
+
+            switch (opc = sc.nextInt()) {
+
+                case 1:
+                    Oracle.metadatosOracle(conexion);
+                    break;
+
+                case 2:
+                    break;
+
+                case 3:
+                    System.out.println("**** Retrocediendo ****");
+                    break;
+
+                default:
+                    System.out.println("Error, seleciona un número válido");
+                    break;
+            }
+
+        }
     }
 
 }
