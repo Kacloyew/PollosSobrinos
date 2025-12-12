@@ -101,7 +101,7 @@ public class MenuOracle {
             switch (opc = sc.nextInt()) {
 
                 case 1:
-                    Oracle.hacerPedidoOracle(conexion);
+                    Oracle.aniadirPedidoOracle(conexion);
 
                     break;
 
