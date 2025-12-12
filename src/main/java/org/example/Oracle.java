@@ -8,6 +8,8 @@ import java.io.Reader;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Oracle {
@@ -539,11 +541,83 @@ public class Oracle {
             throw new RuntimeException(e);
         }
     }
+    public static void metadatosResultSet(Connection conexion) {
+
+        Scanner sc = new Scanner(System.in);
 
 
+        try {
+            DatabaseMetaData metaBD = conexion.getMetaData();
+            String schema = metaBD.getUserName().toUpperCase();
+
+            System.out.println("=== TABLAS DISPONIBLES EN TU ESQUEMA ===");
+            List<String> misTablas = new ArrayList<>();
+
+            try (ResultSet tablas = metaBD.getTables(null, null, "%", new String[]{"TABLE"})) {
+                while (tablas.next()) {
+                    String tabla = tablas.getString("TABLE_NAME");
+                    String owner = tablas.getString("TABLE_SCHEM");
+
+                    if (owner != null && owner.equals(schema)) {
+                        System.out.println(" - " + tabla);
+                        misTablas.add(tabla);
+                    }
+                }
+            }
+
+            if (misTablas.isEmpty()) {
+                System.out.println("No tienes tablas.");
+                return;
+            }
+
+            // Pedir tabla al usuario
+
+            System.out.print("\nIntroduce el nombre de la tabla: ");
+            String tablaElegida = sc.nextLine().trim().toUpperCase();
+
+            if (!misTablas.contains(tablaElegida)) {
+                System.out.println("Esa tabla no existe.");
+                return;
+            }
 
 
-    public static Connection conectar() {
+            // Ejecutar consulta y mostrar metadatos
+
+            String sql = "SELECT * FROM " + tablaElegida;
+            Statement st = conexion.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+
+            ResultSetMetaData meta = rs.getMetaData();
+            int numCols = meta.getColumnCount();
+
+            System.out.println("\n=== METADATOS DEL RESULTSET ===");
+            System.out.println("Número de columnas: " + numCols + "\n");
+
+            for (int i = 1; i <= numCols; i++) {
+                System.out.printf(
+                        "Columna %d:\n" +
+                                "   Nombre: %s\n" +
+                                "   Tipo: %s\n" +
+                                "   Tamaño: %d\n" +
+                                "   Nullable: %s\n\n",
+                        i,
+                        meta.getColumnName(i),
+                        meta.getColumnTypeName(i),
+                        meta.getColumnDisplaySize(i),
+                        meta.isNullable(i) != ResultSetMetaData.columnNoNulls ? "SI" : "NO"
+                );
+            }
+
+            rs.close();
+            st.close();
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+        public static Connection conectar() {
 
          try {
 

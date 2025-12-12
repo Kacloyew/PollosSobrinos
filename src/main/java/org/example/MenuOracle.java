@@ -210,6 +210,7 @@ public class MenuOracle {
                     break;
 
                 case 2:
+                    Oracle.metadatosResultSet(conexion);
                     break;
 
                 case 3:
