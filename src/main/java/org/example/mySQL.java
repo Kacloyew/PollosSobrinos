@@ -148,7 +148,7 @@ public class mySQL {
             if (confirmacion.equalsIgnoreCase("S")) {
 
                 int filasAfectadas = pstmt.executeUpdate();
-                System.out.println("Pedido insertado correctamente. Filas afectadas: " + filasAfectadas);
+                System.out.println("Pedido insertado correctamente. Filas afectadas: " + filasAfectadas + "\n");
 
             } else {
 
