@@ -444,31 +444,36 @@ public class Oracle {
         try {
             DatabaseMetaData meta = conexion.getMetaData();
 
-            System.out.println("=== INFORMACIÓN GENERAL ORACLE ===");
-            System.out.println("Nombre BD: " + meta.getDatabaseProductName());
-            System.out.println("Driver: " + meta.getDriverName());
-            System.out.println("URL: " + meta.getURL());
-            System.out.println("Usuario: " + meta.getUserName());
+            System.out.println("=== INFORMACIÓN GENERAL BD ORACLE ===");
+            System.out.println("Nombre BD:  " + meta.getDatabaseProductName());
+            System.out.println("Driver:     " + meta.getDriverName());
+            System.out.println("URL:        " + meta.getURL());
+            System.out.println("Usuario:    " + meta.getUserName());
             System.out.println();
 
-            String catalog = null;
-            String schema = meta.getUserName().toUpperCase();  // muy importante
+            String schema = meta.getUserName().toUpperCase();
 
             System.out.println("=== TABLAS DEL ESQUEMA " + schema + " ===");
 
-            try (ResultSet tablas = meta.getTables(catalog, schema, "%", new String[]{"TABLE"})) {
+            // Oracle ignora el parámetro schema → filtraremos manualmente
+            try (ResultSet tablas = meta.getTables(null, null, "%", new String[]{"TABLE"})) {
 
                 while (tablas.next()) {
 
                     String tabla = tablas.getString("TABLE_NAME");
+                    String owner = tablas.getString("TABLE_SCHEM");
+
+                    // 🔥 FILTRO: solo mostrar tablas que pertenezcan a mi usuario
+                    if (owner == null || !owner.equals(schema)) {
+                        continue;
+                    }
+
                     System.out.println("\nTABLA: " + tabla);
 
-                    // ----------------------------
                     // COLUMNAS
-                    // ----------------------------
-                    System.out.println(" - Columnas:");
-                    try (ResultSet cols = meta.getColumns(catalog, schema, tabla, "%")) {
 
+                    System.out.println(" - Columnas:");
+                    try (ResultSet cols = meta.getColumns(null, schema, tabla, "%")) {
                         while (cols.next()) {
                             System.out.printf(
                                     "   %s | %s | Tamaño=%d | Null=%s%n",
@@ -480,13 +485,11 @@ public class Oracle {
                         }
                     }
 
-                    // ----------------------------
-                    // PRIMARY KEY
-                    // ----------------------------
+                    // PRIMARY KEYS
                     System.out.println(" - Clave primaria:");
                     boolean tienePK = false;
 
-                    try (ResultSet pk = meta.getPrimaryKeys(catalog, schema, tabla)) {
+                    try (ResultSet pk = meta.getPrimaryKeys(null, schema, tabla)) {
                         while (pk.next()) {
                             System.out.println("   " + pk.getString("COLUMN_NAME"));
                             tienePK = true;
@@ -494,13 +497,12 @@ public class Oracle {
                     }
                     if (!tienePK) System.out.println("   (no tiene PK)");
 
-                    // ----------------------------
-                    // FOREIGN KEYS IMPORTADAS
-                    // ----------------------------
-                    System.out.println(" - FKs importadas:");
-                    boolean tieneFKimp = false;
 
-                    try (ResultSet fkImp = meta.getImportedKeys(catalog, schema, tabla)) {
+                    // FOREIGN KEYS IMPORTADAS
+                    System.out.println(" - FKs importadas:");
+                    boolean tieneFKImp = false;
+
+                    try (ResultSet fkImp = meta.getImportedKeys(null, schema, tabla)) {
                         while (fkImp.next()) {
                             System.out.printf(
                                     "   %s → %s(%s)%n",
@@ -508,18 +510,17 @@ public class Oracle {
                                     fkImp.getString("PKTABLE_NAME"),
                                     fkImp.getString("PKCOLUMN_NAME")
                             );
-                            tieneFKimp = true;
+                            tieneFKImp = true;
                         }
                     }
-                    if (!tieneFKimp) System.out.println("   (ninguna)");
+                    if (!tieneFKImp) System.out.println("   (ninguna)");
 
-                    // ----------------------------
+
                     // FOREIGN KEYS EXPORTADAS
-                    // ----------------------------
                     System.out.println(" - FKs exportadas:");
-                    boolean tieneFKexp = false;
+                    boolean tieneFKExp = false;
 
-                    try (ResultSet fkExp = meta.getExportedKeys(catalog, schema, tabla)) {
+                    try (ResultSet fkExp = meta.getExportedKeys(null, schema, tabla)) {
                         while (fkExp.next()) {
                             System.out.printf(
                                     "   %s(%s) ← %s%n",
@@ -527,18 +528,18 @@ public class Oracle {
                                     fkExp.getString("PKCOLUMN_NAME"),
                                     fkExp.getString("FKTABLE_NAME")
                             );
-                            tieneFKexp = true;
+                            tieneFKExp = true;
                         }
                     }
-                    if (!tieneFKexp) System.out.println("   (ninguna)");
+                    if (!tieneFKExp) System.out.println("   (ninguna)");
                 }
             }
 
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
     }
+
 
 
 
