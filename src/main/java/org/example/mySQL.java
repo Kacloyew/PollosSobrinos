@@ -221,7 +221,7 @@ public class mySQL {
             System.out.println("Correo del cliente: " + correo);
             System.out.println("Tienda ID: " + tienda_id);
 
-            System.out.print("\n¿Confirmar pedido? (S/N): ");
+            System.out.print("\n¿Confirmar cliente? (S/N): ");
             String confirmacion = sc.nextLine();
 
             if (confirmacion.equalsIgnoreCase("S")) {
@@ -232,6 +232,67 @@ public class mySQL {
             } else {
 
                 System.out.println("Cliente cancelado.");
+
+            }
+
+        } catch (SQLException e) {
+
+            throw new RuntimeException(e);
+
+        }
+
+    }
+
+    public static void aniadirProductoMySQL(Connection conexion) {
+
+        Scanner sc = new Scanner(System.in);
+
+        try {
+
+            System.out.println("=== NUEVO PRODUCTO ===");
+
+            String sqlProducto = "INSERT INTO Productos (Nombre, Precio, Stock, Proveedor_ID) VALUES (?, ?, ?, ?)";
+
+            PreparedStatement pstmt = conexion.prepareStatement(sqlProducto);
+
+            // Pedimos el Nombre
+            System.out.println("Nombre del producto: ");
+            String nombre = sc.nextLine();
+            pstmt.setString(1, nombre);
+
+            // Pedir Precio
+            System.out.print("Precio del producto: ");
+            double precio = sc.nextDouble();
+            pstmt.setDouble(2, precio);
+
+            // Pedir Stock
+            System.out.print("Stock del producto: ");
+            int stock = sc.nextInt();
+            pstmt.setInt(3, stock);
+
+            // Pedir Stock
+            System.out.print("Stock del producto: ");
+            int proveedor_id = sc.nextInt();
+            pstmt.setInt(4, proveedor_id);
+
+            // Confirmar pedido
+            System.out.println("\n--- Resumen del Producto ---");
+            System.out.println("Nombre del producto: " + nombre);
+            System.out.println("Precio del producto: " + precio);
+            System.out.println("Stock del producto: " + stock);
+            System.out.println("ID del proveedor: " + proveedor_id);
+
+            System.out.print("\n¿Confirmar producto? (S/N): ");
+            String confirmacion = sc.nextLine();
+
+            if (confirmacion.equalsIgnoreCase("S")) {
+
+                int filasAfectadas = pstmt.executeUpdate();
+                System.out.println("Producto insertado correctamente. Filas afectadas: " + filasAfectadas + "\n");
+
+            } else {
+
+                System.out.println("Producto cancelado.");
 
             }
 

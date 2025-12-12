@@ -112,6 +112,7 @@ public class MenuMySQL {
 
                 case 3:
 
+                    mySQL.aniadirProductoMySQL(conexion);
                     break;
 
                 case 4:
