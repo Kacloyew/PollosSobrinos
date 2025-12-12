@@ -167,100 +167,59 @@ public class mySQL {
 
             System.out.println("=== NUEVO CLIENTE ===");
 
-            String sqlPedido = "INSERT INTO Pedidos (Nombre, Apellido, NIF_NIE, Telefono, CorreoElectronico, Tienda_ID) VALUES (?, ?, ?, ?, ?, ?)";
+            String sqlCliente = "INSERT INTO Pedidos (Nombre, Apellido, NIF_NIE, Telefono, CorreoElectronico, Tienda_ID) VALUES (?, ?, ?, ?, ?, ?)";
 
-            PreparedStatement pstmt = conexion.prepareStatement(sqlPedido);
+            PreparedStatement pstmt = conexion.prepareStatement(sqlCliente);
 
-            // Pedimos el ID Empleado
-            System.out.println("ID del Empleado: ");
-            String empleadoInput = sc.nextLine();
-            pstmt.setInt(1, Integer.parseInt(empleadoInput));
+            // Pedimos el Nombre
+            System.out.println("Nombre del cliente: ");
+            String nombre = sc.nextLine();
+            pstmt.setString(1, nombre);
 
+            // Pedir Apellido
+            System.out.print("Apellido del cliente: ");
+            String apellido = sc.nextLine();
+            pstmt.setString(2, apellido);
 
-            // Pedir Tienda_ID
-            System.out.print("ID de la Tienda: ");
-            int tiendaId = Integer.parseInt(sc.nextLine());
-            pstmt.setInt(2, tiendaId);
+            // Pedir NIF_NIE
+            System.out.print("NIF_NIE del cliente: ");
+            String NIF_NIE = sc.nextLine();
+            pstmt.setString(3, NIF_NIE);
 
-            // Pedir Cliente_ID
-            System.out.print("ID del Cliente: ");
-            int clienteId = Integer.parseInt(sc.nextLine());
-            pstmt.setInt(3, clienteId);
-
-            // Pedir Producto_ID
-            int productoId;
+            // Pedir Telefono
+            String telefono;
             while (true) {
 
-                System.out.print("ID del Producto: ");
-                productoId = Integer.parseInt(sc.nextLine());
+                System.out.print("Telefono del cliente: ");
+                telefono = sc.nextLine();
 
-                // Verificar si el producto existe (ESTA ES LA VALIDACIÓN IMPORTANTE)
-                PreparedStatement checkProducto = conexion.prepareStatement("SELECT Producto_ID FROM Productos WHERE Producto_ID = ?");
-                checkProducto.setInt(1, productoId);
-                ResultSet rs = checkProducto.executeQuery();
+                if (telefono.length() != 11) {
 
-                if (rs.next()) {
-
-                    break; // Producto existe
-
-                } else {
-
-                    System.out.println("El Producto_ID " + productoId + " no existe.");
-
-                    // Mostrar productos disponibles para ayudar al usuario
-                    System.out.println("Productos disponibles:");
-
-                    Statement listProd = conexion.createStatement();
-                    ResultSet productos = listProd.executeQuery("SELECT Producto_ID, Nombre FROM Productos ORDER BY Producto_ID");
-
-                    while (productos.next()) {
-                        System.out.println("   - ID: " + productos.getInt("Producto_ID") + ", Nombre: " + productos.getString("Nombre"));
-
-                    }
-
-                    System.out.println("Intenta de nuevo:");
+                    break;
 
                 }
 
             }
-            pstmt.setInt(4, productoId);
+            pstmt.setString(4, telefono);
 
-            // Fecha del Pedido
-            System.out.print("Fecha del pedido (formato: yyyy-MM-dd) o Enter para fecha actual: ");
-            String fechaInput = sc.nextLine();
+            // Pedir Correo
+            System.out.print("Correo del cliente: ");
+            String correo = sc.nextLine();
+            pstmt.setString(5, correo);
 
-            if (!fechaInput.isEmpty()) {
-
-                // Convertir String a Timestamp (solo fecha)
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                java.util.Date parsedDate = dateFormat.parse(fechaInput);
-                Timestamp timestamp = new Timestamp(parsedDate.getTime());
-                pstmt.setTimestamp(5, timestamp);
-
-            } else {
-
-                // Usar fecha actual por defecto
-                pstmt.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
-
-            }
-
-            // Pedir Cantidad
-            System.out.print("Cantidad (presiona Enter para 1): ");
-            String cantidadInput = sc.nextLine();
-            if (!cantidadInput.isEmpty()) {
-                pstmt.setInt(6, Integer.parseInt(cantidadInput));
-            } else {
-                pstmt.setInt(6, 1); // Valor por defecto
-            }
+            // Pedir Tienda_ID
+            System.out.print("Correo del cliente: ");
+            int tienda_id = sc.nextInt();
+            pstmt.setInt(6, tienda_id);
 
             // Confirmar pedido
-            System.out.println("\n--- Resumen del Pedido ---");
-            System.out.println("Empleado ID: " + (empleadoInput.isEmpty() ? "NULL" : empleadoInput));
-            System.out.println("Tienda ID: " + tiendaId);
-            System.out.println("Cliente ID: " + clienteId);
-            System.out.println("Producto ID: " + productoId);
-            System.out.println("Fecha: " + (fechaInput.isEmpty() ? "Actual" : fechaInput));
-            System.out.println("Cantidad: " + (cantidadInput.isEmpty() ? "1" : cantidadInput));
+            System.out.println("\n--- Resumen del Cliente ---");
+            System.out.println("Nombre del cliente: " + nombre);
+            System.out.println("Apellido del cliente: " + apellido);
+            System.out.println("NIF_NIE del cliente: " + NIF_NIE);
+            System.out.println("Telefono del cliente: " + telefono);
+            System.out.println("Correo del cliente: " + correo);
+            System.out.println("Tienda ID: " + tienda_id);
 
             System.out.print("\n¿Confirmar pedido? (S/N): ");
             String confirmacion = sc.nextLine();
@@ -268,15 +227,15 @@ public class mySQL {
             if (confirmacion.equalsIgnoreCase("S")) {
 
                 int filasAfectadas = pstmt.executeUpdate();
-                System.out.println("Pedido insertado correctamente. Filas afectadas: " + filasAfectadas + "\n");
+                System.out.println("Cliente insertado correctamente. Filas afectadas: " + filasAfectadas + "\n");
 
             } else {
 
-                System.out.println("Pedido cancelado.");
+                System.out.println("Cliente cancelado.");
 
             }
 
-        } catch (SQLException | ParseException e) {
+        } catch (SQLException e) {
 
             throw new RuntimeException(e);
 

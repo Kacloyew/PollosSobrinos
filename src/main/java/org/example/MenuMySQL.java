@@ -94,8 +94,8 @@ public class MenuMySQL {
             System.out.println("4. Modificar precio producto");
             System.out.println("5. Buscar producto por Proveedor_ID");
             System.out.println("6. Eliminar un producto (si no está en pedidos)");
-            System.out.println("6. Actualizar salario de empleado por ID_Empleado");
-            System.out.println("7. Salir");
+            System.out.println("7. Actualizar salario de empleado por ID_Empleado");
+            System.out.println("8. Salir");
 
 
             switch (opc = sc.nextInt()) {
