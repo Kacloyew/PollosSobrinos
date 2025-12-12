@@ -45,6 +45,7 @@ public class MenuMySQL {
                     break;
 
                 case 3:
+                    mySQL.hacerPedidoMySQL(conexion);
                     break;
 
                 case 4:

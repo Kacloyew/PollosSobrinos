@@ -124,6 +124,11 @@ public class Oracle {
 
     }
 
+    public static void nuevoProducto(Connection conexion, String nombreTabla, String consultaSQL) {
+
+
+    }
+
     public static Connection conectar() {
 
          try {
