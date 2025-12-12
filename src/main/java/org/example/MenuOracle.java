@@ -11,36 +11,37 @@ public class MenuOracle {
 
         int opc = 0;
 
-        Connection conexion = Oracle.conectar();
+        Connection conectar = Oracle.conectar();
 
-        if (conexion == null) {
+        if (conectar == null) {
 
             System.out.println("Error al conectar con Oracle");
             return;
 
         }
 
-        while (opc != 7) {
+        while (opc != 8) {
 
             System.out.println("===== Menu Oracle =====");
             System.out.println("1. Reinstalar Tablas");
             System.out.println("2. Listar Tablas");
-            System.out.println("3. Hacer nuevo pedido");
-            System.out.println("4. Añadir nuevo producto");
-            System.out.println("5. Modificar precio producto");
-            System.out.println("6. Eliminar un artículo (si no está en pedidos)");
-            System.out.println("7. Volver al menú");
+            System.out.println("3. ");
+            System.out.println("4. ");
+            System.out.println("5. ");
+            System.out.println("6.  ");
+            System.out.println("7. ");
+            System.out.println("8. Volver al menú principal");
 
             switch (opc = sc.nextInt()) {
 
                 case 1:
 
-                    Oracle.crearTablas(conexion);
+                    Oracle.crearTablas();
                     break;
 
                 case 2:
 
-                    listarTablas(conexion);
+                    listarTablas();
                     break;
 
                 case 3:
@@ -56,8 +57,11 @@ public class MenuOracle {
                     break;
 
                 case 7:
+                    break;
+
+                case 8:
                     System.out.println("Salir");
-                    Oracle.desconectar(conexion);
+                    Oracle.desconectar(conectar);
                     return;
 
                 default:
@@ -68,11 +72,13 @@ public class MenuOracle {
 
     }
 
-    private static void listarTablas(Connection conexion) {
+    private static void listarTablas() {
 
         Scanner sc = new Scanner(System.in);
 
         int opc = 0;
+
+        Connection conexion = Oracle.conectar();
 
         if (conexion == null) {
 

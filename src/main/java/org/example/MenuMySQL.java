@@ -11,45 +11,40 @@ public class MenuMySQL {
 
         int opc = 0;
 
-        Connection conexion = mySQL.conectar();
+        Connection conectar = mySQL.conectar();
 
-        if (conexion == null) {
+        if (conectar == null) {
 
             System.out.println("Error al conectar con MySQL");
             return;
 
         }
 
-        while (opc !=7) {
+        while (opc !=8) {
 
             System.out.println("===== Menu MySQL =====");
             System.out.println("1. Reinstalar Tablas");
             System.out.println("2. Listar Tablas");
-            System.out.println("3. Añadir nuevo pedido");
-            System.out.println("4. Añadir nuevo cliente");
-            System.out.println("5. Añadir nuevo producto");
-            System.out.println("6. Modificar precio producto");
-            System.out.println("7. Buscar producto por ID_Proveedor");
-            System.out.println("8. Eliminar un producto (si no está en pedidos)");
-            System.out.println("9. Actualizar salario de empleado por ID_Empleado");
-            System.out.println("0. Volver al menú");
-
+            System.out.println("3. ");
+            System.out.println("4. ");
+            System.out.println("5. ");
+            System.out.println("6.  ");
+            System.out.println("7. ");
+            System.out.println("8. Volver al menú principal");
 
             switch (opc = sc.nextInt()) {
 
                 case 1:
 
-                    mySQL.crearTablas(conexion);
+                    mySQL.crearTablas();
                     break;
 
                 case 2:
 
-                    listarTablas(conexion);
+                    listarTablas();
                     break;
 
                 case 3:
-
-                    mySQL.hacerPedidoMySQL(conexion);
                     break;
 
                 case 4:
@@ -65,14 +60,7 @@ public class MenuMySQL {
                     break;
 
                 case 8:
-                    break;
-
-                case 9:
-                    break;
-
-                case 0:
                     System.out.println("Salir");
-                    mySQL.desconectar(conexion);
                     return;
 
                 default:
@@ -84,11 +72,13 @@ public class MenuMySQL {
 
     }
 
-    private static void listarTablas(Connection conexion) {
+    private static void listarTablas() {
 
         Scanner sc = new Scanner(System.in);
 
         int opc = 0;
+
+        Connection conexion = mySQL.conectar();
 
         if (conexion == null) {
 
@@ -118,6 +108,7 @@ public class MenuMySQL {
                 case 7:
 
                     System.out.println("**** Retrocediendo ****");
+                    mySQL.desconectar(conexion);
                     break;
 
                 default:
