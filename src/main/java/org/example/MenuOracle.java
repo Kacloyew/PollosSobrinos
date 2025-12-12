@@ -20,7 +20,7 @@ public class MenuOracle {
 
         }
 
-        while (opc != 0) {
+        while (opc != 9) {
 
             System.out.println("===== Menu Oracle =====");
             System.out.println("1. Reinstalar Tablas");
@@ -30,9 +30,8 @@ public class MenuOracle {
             System.out.println("5. Añadir nuevo producto");
             System.out.println("6. Modificar precio producto");
             System.out.println("7. Buscar producto por Proveedor_ID");
-            System.out.println("8. Eliminar un artículo (si no está en pedidos)");
-            System.out.println("9. Actualizar salario de empleado por ID_Empleado");
-            System.out.println("0. Volver al menú");
+            System.out.println("8. Actualizar salario de empleado por ID_Empleado");
+            System.out.println("9. Volver al menú");
 
             switch (opc = sc.nextInt()) {
 
@@ -65,9 +64,6 @@ public class MenuOracle {
                     break;
 
                 case 9:
-                    break;
-
-                case 0:
                     System.out.println("Salir");
                     Oracle.desconectar(conexion);
                     return;
