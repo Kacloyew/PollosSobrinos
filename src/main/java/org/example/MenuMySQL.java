@@ -26,12 +26,7 @@ public class MenuMySQL {
             System.out.println("===== Menu MySQL =====");
             System.out.println("1. Reinstalar Tablas");
             System.out.println("2. Listar Tablas");
-            System.out.println("3. Añadir nuevo pedido");
-            System.out.println("4. Añadir nuevo cliente");
-            System.out.println("5. Añadir nuevo producto");
-            System.out.println("6. Modificar precio producto");
-            System.out.println("7. Buscar producto por ID_Proveedor");
-            System.out.println("8. Actualizar salario de empleado por ID_Empleado");
+            System.out.println("3. Operar con las tablas");
             System.out.println("9. Volver al menú");
 
 
@@ -49,10 +44,7 @@ public class MenuMySQL {
 
                 case 3:
 
-                    mySQL.hacerPedidoMySQL(conexion);
-                    break;
-
-                case 4:
+                    operarTablas(conexion);
                     break;
 
                 case 5:
@@ -71,6 +63,70 @@ public class MenuMySQL {
                     System.out.println("Salir");
                     mySQL.desconectar(conexion);
                     return;
+
+                default:
+                    System.out.println("Error, selecciona un número válido");
+
+            }
+
+        }
+
+    }
+
+    private static void operarTablas(Connection conexion) {
+
+        Scanner sc = new Scanner(System.in);
+
+        int opc = 0;
+
+        if (conexion == null) {
+
+            System.out.println("Error al conectar con Oracle");
+            return;
+
+        }
+
+        while (opc != 7) {
+            System.out.println("===== Menu Oracle =====");
+            System.out.println("1. Añadir nuevo pedido");
+            System.out.println("2. Añadir nuevo cliente");
+            System.out.println("3. Añadir nuevo producto");
+            System.out.println("4. Modificar precio producto");
+            System.out.println("5. Buscar producto por Proveedor_ID");
+            System.out.println("6. Actualizar salario de empleado por ID_Empleado");
+            System.out.println("7. Salir");
+
+
+            switch (opc = sc.nextInt()) {
+
+                case 1:
+
+                    mySQL.hacerPedidoMySQL(conexion);
+                    break;
+
+                case 2:
+
+                    break;
+
+                case 3:
+
+                    break;
+
+                case 4:
+
+                    break;
+
+                case 5:
+
+                    break;
+
+                case 6:
+
+                    break;
+
+                case 7:
+                    System.out.println("**** Retrocediendo ****");
+                    break;
 
                 default:
                     System.out.println("Error, selecciona un número válido");
