@@ -88,14 +88,9 @@ public class mySQL {
                     Statement listProd = conexion.createStatement();
                     ResultSet productos = listProd.executeQuery("SELECT Producto_ID, Nombre FROM Productos ORDER BY Producto_ID");
 
-                    boolean hayProductos = false;
                     while (productos.next()) {
                         System.out.println("   - ID: " + productos.getInt("Producto_ID") + ", Nombre: " + productos.getString("Nombre"));
-                        hayProductos = true;
-                    }
 
-                    if (!hayProductos) {
-                        System.out.println("   No hay productos registrados en la base de datos.");
                     }
 
                     System.out.println("Intenta de nuevo:");
