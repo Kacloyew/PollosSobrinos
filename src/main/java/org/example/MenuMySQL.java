@@ -21,7 +21,7 @@ public class MenuMySQL {
         }
 
 
-        while (opc !=7) {
+        while (opc != 0) {
 
             System.out.println("===== Menu MySQL =====");
             System.out.println("1. Reinstalar Tablas");
