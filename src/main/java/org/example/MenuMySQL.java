@@ -102,11 +102,12 @@ public class MenuMySQL {
 
                 case 1:
 
-                    mySQL.hacerPedidoMySQL(conexion);
+                    mySQL.aniadirPedidoMySQL(conexion);
                     break;
 
                 case 2:
 
+                    mySQL.aniadirClienteMySQL(conexion);
                     break;
 
                 case 3:
