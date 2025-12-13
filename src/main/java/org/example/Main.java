@@ -16,7 +16,7 @@ public class Main {
             switch (opc = sc.nextInt()){
 
                 case 1:
-                    MenuMySQL.mostrarMenu();
+                    MenuMySQL.mostrarMenu(sc);
                     break;
 
                 case 2:

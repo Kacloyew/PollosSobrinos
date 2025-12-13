@@ -5,9 +5,7 @@ import java.util.Scanner;
 
 public class MenuMySQL {
 
-    public static void mostrarMenu() {
-
-        Scanner sc = new Scanner(System.in);
+    public static void mostrarMenu(Scanner sc) {
 
         int opc = 0;
 
@@ -20,7 +18,6 @@ public class MenuMySQL {
 
         }
 
-
         while (opc != 9) {
 
             System.out.println("===== Menu MySQL =====");
@@ -30,24 +27,29 @@ public class MenuMySQL {
             System.out.println("4. Mostrar metadatos de la BDD");
             System.out.println("9. Volver al menú principal");
 
-            switch (opc = sc.nextInt()) {
+            try {
+                opc = Integer.parseInt(sc.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Número no válido");
+                continue;
+            }
+
+            switch (opc) {
 
                 case 1:
-
                     mySQL.crearTablas(conexion);
                     break;
 
                 case 2:
-
-                    listarTablas(conexion);
+                    listarTablas(conexion, sc);
                     break;
 
                 case 3:
-
-                    operarTablas(conexion);
+                    operarTablas(conexion, sc);
                     break;
 
                 case 4:
+                    metadatosMySQL(conexion, sc);
                     break;
 
                 case 6:
@@ -73,9 +75,7 @@ public class MenuMySQL {
 
     }
 
-    private static void operarTablas(Connection conexion) {
-
-        Scanner sc = new Scanner(System.in);
+    private static void operarTablas(Connection conexion, Scanner sc) {
 
         int opc = 0;
 
@@ -97,8 +97,14 @@ public class MenuMySQL {
             System.out.println("7. Actualizar salario de empleado por ID_Empleado");
             System.out.println("8. Salir");
 
+            try {
+                opc = Integer.parseInt(sc.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Número no válido");
+                continue;
+            }
 
-            switch (opc = sc.nextInt()) {
+            switch (opc) {
 
                 case 1:
 
@@ -144,9 +150,7 @@ public class MenuMySQL {
 
     }
 
-    private static void listarTablas(Connection conexion) {
-
-        Scanner sc = new Scanner(System.in);
+    private static void listarTablas(Connection conexion, Scanner sc) {
 
         int opc = 0;
 
@@ -168,15 +172,20 @@ public class MenuMySQL {
             System.out.println("6. Productos");
             System.out.println("7. Salir");
 
-            switch (opc = sc.nextInt()) {
+            try {
+                opc = Integer.parseInt(sc.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Número no válido");
+                continue;
+            }
+
+            switch (opc) {
 
                 case 1, 2, 3, 4, 5, 6:
-
                     mySQL.listarTablasMySQL(conexion, opc);
                     break;
 
                 case 7:
-
                     System.out.println("**** Retrocediendo ****");
                     break;
 
@@ -189,4 +198,50 @@ public class MenuMySQL {
 
     }
 
+    public static void metadatosMySQL(Connection conexion, Scanner sc) {
+
+        int opc = 0;
+
+        if (conexion == null) {
+            System.out.println("Error al conectar con MySQL");
+        }
+
+        while (opc != 3) {
+
+            System.out.println("===== Metadatos MySQL =====");
+
+            System.out.println("1. Metadatos generales de MySQL");
+            System.out.println("2. Metadatos ResultSet");
+            System.out.println("3. Volver");
+
+            try {
+                opc = Integer.parseInt(sc.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Número no válido");
+                continue;
+            }
+
+            switch (opc) {
+
+                case 1:
+                    metadatosMySQL.metadatosMySQL(conexion);
+                    break;
+
+                case 2:
+                    metadatosMySQL.metadatosResultSet(conexion);
+                    break;
+
+                case 3:
+                    System.out.println("**** Retrocediendo ****");
+                    break;
+
+                default:
+                    System.out.println("Error, seleciona un número válido");
+                    break;
+            }
+
+        }
+    }
+
 }
+
