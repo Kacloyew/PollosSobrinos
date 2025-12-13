@@ -34,7 +34,7 @@ public class mySQL {
 
     }
 
-    public static void hacerPedidoMySQL(Connection conexion) {
+    public static void aniadirPedidoMySQL(Connection conexion) {
 
         Scanner sc = new Scanner(System.in);
 
@@ -47,13 +47,10 @@ public class mySQL {
             PreparedStatement pstmt = conexion.prepareStatement(sqlPedido);
 
             // Pedimos el ID Empleado
-            System.out.println("=== ID del Empleado ===");
+            System.out.println("ID del Empleado: ");
             String empleadoInput = sc.nextLine();
-            if (!empleadoInput.isEmpty()) {
-                pstmt.setInt(1, Integer.parseInt(empleadoInput));
-            } else {
-                pstmt.setNull(1, Types.INTEGER);
-            }
+            pstmt.setInt(1, Integer.parseInt(empleadoInput));
+
 
             // Pedir Tienda_ID
             System.out.print("ID de la Tienda: ");
@@ -65,49 +62,41 @@ public class mySQL {
             int clienteId = Integer.parseInt(sc.nextLine());
             pstmt.setInt(3, clienteId);
 
-            // 4. Producto_ID (obligatorio) - ESTE ES EL QUE FALLABA
+            // Pedir Producto_ID
             int productoId;
             while (true) {
-                try {
-                    System.out.print("ID del Producto: ");
-                    productoId = Integer.parseInt(sc.nextLine());
 
-                    // Verificar si el producto existe (ESTA ES LA VALIDACIÓN IMPORTANTE)
-                    try {
+                System.out.print("ID del Producto: ");
+                productoId = Integer.parseInt(sc.nextLine());
 
-                        PreparedStatement checkProducto = conexion.prepareStatement("SELECT Producto_ID FROM Productos WHERE Producto_ID = ?");
-                        checkProducto.setInt(1, productoId);
-                        ResultSet rs = checkProducto.executeQuery();
-                        if (rs.next()) {
-                            break; // Producto existe
-                        } else {
-                            System.out.println("❌ El Producto_ID " + productoId + " no existe.");
+                // Verificar si el producto existe (ESTA ES LA VALIDACIÓN IMPORTANTE)
+                PreparedStatement checkProducto = conexion.prepareStatement("SELECT Producto_ID FROM Productos WHERE Producto_ID = ?");
+                checkProducto.setInt(1, productoId);
+                ResultSet rs = checkProducto.executeQuery();
 
-                            // Mostrar productos disponibles para ayudar al usuario
-                            System.out.println("Productos disponibles:");
-                            try (Statement listProd = conexion.createStatement();
-                                 ResultSet productos = listProd.executeQuery(
-                                         "SELECT Producto_ID, Nombre FROM Productos ORDER BY Producto_ID")) {
+                if (rs.next()) {
 
-                                boolean hayProductos = false;
-                                while (productos.next()) {
-                                    System.out.println("   - ID: " + productos.getInt("Producto_ID") +
-                                            ", Nombre: " + productos.getString("Nombre"));
-                                    hayProductos = true;
-                                }
+                    break; // Producto existe
 
-                                if (!hayProductos) {
-                                    System.out.println("   No hay productos registrados en la base de datos.");
-                                }
-                            }
-                            System.out.println("Intenta de nuevo:");
-                        }
-                    } catch (SQLException e) {
-                        System.out.println("⚠️  Por favor, ingresa un número válido.");
+                } else {
+
+                    System.out.println("El Producto_ID " + productoId + " no existe.");
+
+                    // Mostrar productos disponibles para ayudar al usuario
+                    System.out.println("Productos disponibles:");
+
+                    Statement listProd = conexion.createStatement();
+                    ResultSet productos = listProd.executeQuery("SELECT Producto_ID, Nombre FROM Productos ORDER BY Producto_ID");
+
+                    while (productos.next()) {
+                        System.out.println("   - ID: " + productos.getInt("Producto_ID") + ", Nombre: " + productos.getString("Nombre"));
+
                     }
-                } catch (NumberFormatException e) {
-                    System.out.println("⚠️  Por favor, ingresa un número válido.");
+
+                    System.out.println("Intenta de nuevo:");
+
                 }
+
             }
             pstmt.setInt(4, productoId);
 
@@ -152,13 +141,164 @@ public class mySQL {
             String confirmacion = sc.nextLine();
 
             if (confirmacion.equalsIgnoreCase("S")) {
+
                 int filasAfectadas = pstmt.executeUpdate();
-                System.out.println("✅ Pedido insertado correctamente. Filas afectadas: " + filasAfectadas);
+                System.out.println("Pedido insertado correctamente. Filas afectadas: " + filasAfectadas + "\n");
+
             } else {
-                System.out.println("❌ Pedido cancelado.");
+
+                System.out.println("Pedido cancelado.");
+
             }
 
         } catch (SQLException | ParseException e) {
+
+            throw new RuntimeException(e);
+
+        }
+
+    }
+
+    public static void aniadirClienteMySQL(Connection conexion) {
+
+        Scanner sc = new Scanner(System.in);
+
+        try {
+
+            System.out.println("=== NUEVO CLIENTE ===");
+
+            String sqlCliente = "INSERT INTO Clientes (Nombre, Apellido, NIF_NIE, Telefono, CorreoElectronico, Tienda_ID) VALUES (?, ?, ?, ?, ?, ?)";
+
+            PreparedStatement pstmt = conexion.prepareStatement(sqlCliente);
+
+            // Pedimos el Nombre
+            System.out.println("Nombre del cliente: ");
+            String nombre = sc.nextLine();
+            pstmt.setString(1, nombre);
+
+            // Pedir Apellido
+            System.out.print("Apellido del cliente: ");
+            String apellido = sc.nextLine();
+            pstmt.setString(2, apellido);
+
+            // Pedir NIF_NIE
+            System.out.print("NIF_NIE del cliente: ");
+            String NIF_NIE = sc.nextLine();
+            pstmt.setString(3, NIF_NIE);
+
+            // Pedir Telefono
+            String telefono;
+            while (true) {
+
+                System.out.print("Telefono del cliente: ");
+                telefono = sc.nextLine();
+
+                if (telefono.length() != 11) {
+
+                    break;
+
+                }
+
+            }
+            pstmt.setString(4, telefono);
+
+            // Pedir Correo
+            System.out.print("Correo del cliente: ");
+            String correo = sc.nextLine();
+            pstmt.setString(5, correo);
+
+            // Pedir Tienda_ID
+            System.out.print("Pedir Tienda del cliente: ");
+            int tienda_id = sc.nextInt();
+            pstmt.setInt(6, tienda_id);
+
+            // Confirmar pedido
+            System.out.println("\n--- Resumen del Cliente ---");
+            System.out.println("Nombre del cliente: " + nombre);
+            System.out.println("Apellido del cliente: " + apellido);
+            System.out.println("NIF_NIE del cliente: " + NIF_NIE);
+            System.out.println("Telefono del cliente: " + telefono);
+            System.out.println("Correo del cliente: " + correo);
+            System.out.println("Tienda ID: " + tienda_id);
+
+            System.out.print("\n¿Confirmar cliente? (S/N): ");
+            sc.nextLine();
+            String confirmacion = sc.nextLine();
+
+            if (confirmacion.equalsIgnoreCase("S")) {
+
+                int filasAfectadas = pstmt.executeUpdate();
+                System.out.println("Cliente insertado correctamente. Filas afectadas: " + filasAfectadas + "\n");
+
+            } else {
+
+                System.out.println("Cliente cancelado.");
+
+            }
+
+        } catch (SQLException e) {
+
+            throw new RuntimeException(e);
+
+        }
+
+    }
+
+    public static void aniadirProductoMySQL(Connection conexion) {
+
+        Scanner sc = new Scanner(System.in);
+
+        try {
+
+            System.out.println("=== NUEVO PRODUCTO ===");
+
+            String sqlProducto = "INSERT INTO Productos (Nombre, Precio, Stock, Proveedor_ID) VALUES (?, ?, ?, ?)";
+
+            PreparedStatement pstmt = conexion.prepareStatement(sqlProducto);
+
+            // Pedimos el Nombre
+            System.out.println("Nombre del producto: ");
+            String nombre = sc.nextLine();
+            pstmt.setString(1, nombre);
+
+            // Pedir Precio
+            System.out.print("Precio del producto: ");
+            double precio = sc.nextDouble();
+            pstmt.setDouble(2, precio);
+
+            // Pedir Stock
+            System.out.print("Stock del producto: ");
+            int stock = sc.nextInt();
+            pstmt.setInt(3, stock);
+
+            // Pedir proveedor_ID
+            System.out.print("Pedir proveedor_ID: ");
+            int proveedor_id = sc.nextInt();
+            pstmt.setInt(4, proveedor_id);
+
+            // Confirmar pedido
+            System.out.println("\n--- Resumen del Producto ---");
+            System.out.println("Nombre del producto: " + nombre);
+            System.out.println("Precio del producto: " + precio);
+            System.out.println("Stock del producto: " + stock);
+            System.out.println("ID del proveedor: " + proveedor_id);
+
+            System.out.print("\n¿Confirmar producto? (S/N): ");
+            sc.nextLine();
+            String confirmacion = sc.nextLine();
+
+            if (confirmacion.equalsIgnoreCase("S")) {
+
+                int filasAfectadas = pstmt.executeUpdate();
+                System.out.println("Producto insertado correctamente. Filas afectadas: " + filasAfectadas + "\n");
+
+            } else {
+
+                System.out.println("Producto cancelado.");
+
+            }
+
+        } catch (SQLException e) {
 
             throw new RuntimeException(e);
 
