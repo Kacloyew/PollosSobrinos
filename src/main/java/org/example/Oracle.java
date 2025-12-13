@@ -8,6 +8,8 @@ import java.io.Reader;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Oracle {
@@ -411,35 +413,7 @@ public class Oracle {
 
     }
 
-    public static void nuevoProducto(Connection conexion, String nombreTabl, String consultaSQL) {
-
-        try {
-            //crear Statement para ejecutar consulta
-            Statement stmt = conexion.createStatement();
-
-            //realizar consulta para obetener registros de tablas
-            ResultSet rs = stmt.executeQuery(consultaSQL);
-
-            // obtener metada de las columnas
-            ResultSetMetaData meta = rs.getMetaData();
-            int columnas = meta.getColumnCount();
-
-            System.out.println();
-
-
-
-
-
-        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-        }
-
-
-
-
-    }
-
-    public static Connection conectar() {
+        public static Connection conectar() {
 
          try {
 

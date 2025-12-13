@@ -5,12 +5,9 @@ import java.util.Scanner;
 
 public class MenuOracle {
 
-    public static void mostrarMenu() {
-
-        Scanner sc = new Scanner(System.in);
+    public static void mostrarMenu(Scanner sc) {
 
         int opc = 0;
-
         Connection conexion = Oracle.conectar();
 
         if (conexion == null) {
@@ -19,7 +16,6 @@ public class MenuOracle {
             return;
 
         }
-
 
         while (opc != 9) {
 
@@ -30,24 +26,30 @@ public class MenuOracle {
             System.out.println("4. Mostrar metadatos de la BDD");
             System.out.println("9. Volver al menú principal");
 
-            switch (opc = sc.nextInt()) {
+            try {
+                opc = Integer.parseInt(sc.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Introduce un número válido");
+                continue;
+            }
+
+
+            switch (opc) {
 
                 case 1:
-
                     Oracle.crearTablas(conexion);
                     break;
 
                 case 2:
-
-                    listarTablas(conexion);
+                    listarTablas(conexion, sc);
                     break;
 
                 case 3:
-
-                    operarTablas(conexion);
+                    operarTablas(conexion, sc);
                     break;
 
                 case 4:
+                    metadatosOracle(conexion, sc);
                     break;
 
                 case 6:
@@ -73,9 +75,7 @@ public class MenuOracle {
 
     }
 
-    private static void operarTablas(Connection conexion) {
-
-        Scanner sc = new Scanner(System.in);
+    private static void operarTablas(Connection conexion, Scanner sc) {
 
         int opc = 0;
 
@@ -83,7 +83,6 @@ public class MenuOracle {
 
             System.out.println("Error al conectar con Oracle");
             return;
-
         }
 
         while (opc != 7) {
@@ -97,8 +96,14 @@ public class MenuOracle {
             System.out.println("6. Actualizar salario de empleado por ID_Empleado");
             System.out.println("7. Salir");
 
+            try {
+                opc = Integer.parseInt(sc.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Número no válido");
+                continue;
+            }
 
-            switch (opc = sc.nextInt()) {
+            switch (opc) {
 
                 case 1:
                     Oracle.aniadirPedidoOracle(conexion);
@@ -141,9 +146,7 @@ public class MenuOracle {
 
     }
 
-    private static void listarTablas(Connection conexion) {
-
-        Scanner sc = new Scanner(System.in);
+    private static void listarTablas(Connection conexion, Scanner sc) {
 
         int opc = 0;
 
@@ -165,15 +168,20 @@ public class MenuOracle {
             System.out.println("6. Productos");
             System.out.println("7. Salir");
 
-            switch (opc = sc.nextInt()) {
+            try {
+                opc = Integer.parseInt(sc.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Número no válido");
+                continue;
+            }
+
+            switch (opc) {
 
                 case 1, 2, 3, 4, 5, 6:
-
                     Oracle.listarTablasOracle(conexion, opc);
                     break;
 
                 case 7:
-
                     System.out.println("**** Retrocediendo ****");
                     break;
 
@@ -184,6 +192,50 @@ public class MenuOracle {
 
         }
 
+    }
+    public static void metadatosOracle(Connection conexion, Scanner sc) {
+
+        int opc = 0;
+
+        if (conexion == null) {
+            System.out.println("Error al conectar con Oracle");
+        }
+
+        while (opc != 3) {
+
+            System.out.println("===== Metadatos Oracle =====");
+
+            System.out.println("1. Metadatos generales de Oracle");
+            System.out.println("2. Metadatos ResultSet");
+            System.out.println("3. Volver");
+
+            try {
+                opc = Integer.parseInt(sc.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Número no válido");
+                continue;
+            }
+
+            switch (opc) {
+
+                case 1:
+                    metadatosOracle.metadatosOracle(conexion);
+                    break;
+
+                case 2:
+                    metadatosOracle.metadatosResultSet(conexion);
+                    break;
+
+                case 3:
+                    System.out.println("**** Retrocediendo ****");
+                    break;
+
+                default:
+                    System.out.println("Error, seleciona un número válido");
+                    break;
+            }
+
+        }
     }
 
 }
