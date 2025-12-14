@@ -130,7 +130,7 @@ public class MenuOracle {
                     break;
 
                 case 7:
-
+                    Oracle.modificarSalarioEmpleado(conexion, sc);
                     break;
 
                 case 8:
