@@ -355,6 +355,48 @@ public class mySQL {
 
     }
 
+    public static void buscarProductoPorProveedor (Connection conexion) {
+
+        Scanner sc = new Scanner(System.in);
+
+        try {
+
+            System.out.println("=== BUSCAR PRODUCTO ===");
+
+            Statement stmt = conexion.createStatement();
+            ResultSet proveedores =  stmt.executeQuery("SELECT Proveedor_ID, Nombre FROM Proveedores");
+
+            while (proveedores.next()) {
+
+                System.out.println("   - ID: " + proveedores.getInt("Proveedor_ID") + ", Nombre: " + proveedores.getString("Nombre"));
+
+            }
+
+            // Pedimos el ID del proveedor
+            System.out.println("Introduce el ID del proveedor: ");
+            int id_proveedor = sc.nextInt();
+
+            // Preparamos la sentencia de búsqueda
+            String sql = "SELECT * FROM Productos WHERE Proveedor_ID = ?";
+            PreparedStatement pstmt = conexion.prepareStatement(sql);
+            pstmt.setInt(1, id_proveedor);
+
+            // Ejecutamos la sentencia anteriormente preparada
+            int filas = pstmt.executeUpdate();
+            if (filas > 0) {
+                System.out.println("Precio actualizado correctamente");
+            } else {
+                System.out.println("No existe un producto con ese ID");
+            }
+
+        } catch (SQLException e) {
+
+            throw new RuntimeException(e);
+
+        }
+
+    }
+
     public static void listarTablasMySQL (Connection conexion, int posicion) {
 
         switch (posicion) {

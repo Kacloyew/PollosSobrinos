@@ -128,6 +128,7 @@ public class MenuMySQL {
 
                 case 5:
 
+                    mySQL.buscarProductoPorProveedor(conexion);
                     break;
 
                 case 6:
