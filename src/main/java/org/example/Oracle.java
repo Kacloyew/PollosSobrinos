@@ -417,6 +417,66 @@ public class Oracle {
 
         }
 
+    }
+
+    public static void eliminarProducto(Connection conexion, Scanner sc) {
+
+        try {
+
+            conexion.setAutoCommit(true); // para confirmar el DELETE
+            System.out.println("=== ELIMINAR PRODUCTO ===");
+
+            // Mostrar productos
+            Statement stmt = conexion.createStatement();
+            ResultSet rs = stmt.executeQuery(
+                    "SELECT Producto_ID, Nombre FROM Productos ORDER BY Producto_ID"
+            );
+
+            while (rs.next()) {
+                System.out.println("ID: " + rs.getInt("Producto_ID")
+                        + " | " + rs.getString("Nombre"));
+            }
+
+            // Pedimos el ID_Producto
+            System.out.print("ID del producto a eliminar: ");
+            int idProducto = sc.nextInt();
+
+            // Comprobar si hay algún pedido con ese producto
+            String sqlCheck = "SELECT 1 FROM Pedidos WHERE Producto_ID = ?";
+            PreparedStatement check = conexion.prepareStatement(sqlCheck);
+            check.setInt(1, idProducto);
+
+            ResultSet rsEliminar = check.executeQuery();
+
+            if (rsEliminar.next()) {
+
+                System.out.println("No se puede eliminar: tiene pedidos asociados");
+
+            } else {
+
+                String sqlDelete = "DELETE FROM Productos WHERE Producto_ID = ?";
+                PreparedStatement delete = conexion.prepareStatement(sqlDelete);
+                delete.setInt(1, idProducto);
+
+                int filas = delete.executeUpdate();
+                System.out.println("Filas afectadas: " + filas); // Depuración
+
+                if (filas > 0) {
+                    System.out.println("Producto eliminado");
+                } else {
+                    System.out.println("Producto no encontrado");
+
+                }
+
+            }
+
+            sc.nextLine();
+
+        } catch (SQLException e) {
+
+            throw new RuntimeException(e);
+
+        }
 
     }
 
