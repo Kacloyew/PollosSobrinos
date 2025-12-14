@@ -365,6 +365,61 @@ public class Oracle {
 
     }
 
+    public static void buscarProductoPorProveedor(Connection conexion, Scanner sc) {
+
+        try {
+
+            System.out.println("=== BUSCAR PRODUCTO POR PROVEEDOR ===");
+
+            //mostrar proveedores
+            Statement stmt = conexion.createStatement();
+            ResultSet proveedores = stmt.executeQuery("SELECT Proveedor_ID, Nombre FROM Proveedores");
+
+            while (proveedores.next()) {
+                System.out.println("  - ID: " + proveedores.getInt("Proveedor_ID")
+                        + ", Nombre: " + proveedores.getString("Nombre"));
+            }
+
+            //pedir ID proveedor
+            System.out.println("Introduce el ID del proveedor: ");
+            int idProveedor = sc.nextInt();
+
+            //limpiar el buffer
+            sc.nextLine();
+
+            //consulta de prodcutos
+            String sql = "SELECT Producto_ID, Nombre, Precio FROM Productos WHERE Proveedor_ID = ?";
+            PreparedStatement pstmt = conexion.prepareStatement(sql);
+            pstmt.setInt(1, idProveedor);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            boolean hayResultados = false;
+
+            while (rs.next()) {
+                hayResultados = true;
+                System.out.println(
+                        "Producto ID: " + rs.getInt("Producto_ID") +
+                                ", Nombre: " + rs.getString("Nombre") +
+                                ", Precio: " + rs.getDouble("Precio")
+                );
+            }
+
+            if (!hayResultados) {
+                System.out.println("No hay productos para ese proveedor");
+            }
+
+            sc.nextLine();
+
+        }catch (Exception e){
+
+            throw new RuntimeException(e);
+
+        }
+
+
+    }
+
     public static void listarTablasOracle (Connection conexion, int posicion) {
 
         switch (posicion) {
