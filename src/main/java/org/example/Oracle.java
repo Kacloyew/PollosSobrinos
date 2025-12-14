@@ -41,9 +41,7 @@ public class Oracle {
 
     }
 
-    public static void aniadirPedidoOracle(Connection conexion) {
-
-        Scanner sc = new Scanner(System.in);
+    public static void aniadirPedidoOracle(Connection conexion, Scanner sc) {
 
         try {
 
@@ -166,9 +164,7 @@ public class Oracle {
 
     }
 
-    public static void aniadirClienteOracle(Connection conexion) {
-
-        Scanner sc = new Scanner(System.in);
+    public static void aniadirClienteOracle(Connection conexion, Scanner sc) {
 
         try {
 
@@ -255,9 +251,7 @@ public class Oracle {
         }
     }
 
-    public static void aniadirProductoOracle(Connection conexion) {
-
-        Scanner sc = new Scanner(System.in);
+    public static void aniadirProductoOracle(Connection conexion, Scanner sc) {
 
         try {
 
@@ -315,6 +309,53 @@ public class Oracle {
                 System.out.println("Producto cancelado.");
 
             }
+
+        } catch (SQLException e) {
+
+            throw new RuntimeException(e);
+
+        }
+
+    }
+    public static void modificarPrecioProducto(Connection conexion, Scanner sc) {
+
+        try {
+
+            System.out.println("=== MODIFICAR PRODUCTO ===");
+
+            // Mostrar los productos disponibles a modificar
+            Statement stmt = conexion.createStatement();
+            ResultSet productos = stmt.executeQuery("SELECT Producto_ID, Nombre FROM Productos ORDER BY Producto_ID");
+
+            while (productos.next()) {
+
+                System.out.println("   - ID: " + productos.getInt("Producto_ID") + ", Nombre: " + productos.getString("Nombre"));
+
+            }
+
+            // Pedir que producto modificar
+            System.out.println("Que producto quieres modificar: ");
+            int prodSelect = sc.nextInt();
+
+            // Pedir el nuevo precio del producto
+            System.out.println("Introduce el nuevo precio del producto: ");
+            double precio = sc.nextDouble();
+
+            // Preparamos la sentencia para actualizar el precio
+            String sql = "UPDATE Productos SET Precio = ? WHERE Producto_ID = ?";
+            PreparedStatement pstmt = conexion.prepareStatement(sql);
+            pstmt.setDouble(1, precio);
+            pstmt.setInt(2, prodSelect);
+
+            // Ejecutamos la sentencia anteriormente preparada
+            int filas = pstmt.executeUpdate();
+            if (filas > 0) {
+                System.out.println("Precio actualizado correctamente");
+            } else {
+                System.out.println("No existe un producto con ese ID");
+            }
+
+            sc.nextLine();
 
         } catch (SQLException e) {
 

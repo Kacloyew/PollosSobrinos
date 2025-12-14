@@ -85,7 +85,7 @@ public class MenuOracle {
             return;
         }
 
-        while (opc != 7) {
+        while (opc != 8) {
             System.out.println("===== Menu Oracle =====");
             System.out.println("1. Añadir nuevo pedido");
             System.out.println("2. Añadir nuevo cliente");
@@ -93,8 +93,8 @@ public class MenuOracle {
             System.out.println("4. Modificar precio producto");
             System.out.println("5. Buscar producto por Proveedor_ID");
             System.out.println("6. Eliminar un producto (si no está en pedidos)");
-            System.out.println("6. Actualizar salario de empleado por ID_Empleado");
-            System.out.println("7. Salir");
+            System.out.println("7. Actualizar salario de empleado por ID_Empleado");
+            System.out.println("8. Salir");
 
             try {
                 opc = Integer.parseInt(sc.nextLine());
@@ -106,19 +106,19 @@ public class MenuOracle {
             switch (opc) {
 
                 case 1:
-                    Oracle.aniadirPedidoOracle(conexion);
+                    Oracle.aniadirPedidoOracle(conexion, sc);
                     break;
 
                 case 2:
-                    Oracle.aniadirClienteOracle(conexion);
+                    Oracle.aniadirClienteOracle(conexion, sc);
                     break;
 
                 case 3:
-                    Oracle.aniadirProductoOracle(conexion);
+                    Oracle.aniadirProductoOracle(conexion, sc);
                     break;
 
                 case 4:
-
+                    Oracle.modificarPrecioProducto(conexion, sc);
                     break;
 
                 case 5:
