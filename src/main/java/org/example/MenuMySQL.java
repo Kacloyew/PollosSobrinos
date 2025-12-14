@@ -133,6 +133,7 @@ public class MenuMySQL {
 
                 case 6:
 
+                    mySQL.eliminarProducto(conexion);
                     break;
 
                 case 7:
@@ -244,6 +245,7 @@ public class MenuMySQL {
             }
 
         }
+
     }
 
 }
