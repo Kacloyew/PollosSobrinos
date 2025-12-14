@@ -122,7 +122,7 @@ public class MenuOracle {
                     break;
 
                 case 5:
-
+                    Oracle.buscarProductoPorProveedor(conexion, sc);
                     break;
 
                 case 6:
