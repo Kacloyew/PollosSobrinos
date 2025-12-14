@@ -35,9 +35,7 @@ public class mySQL {
 
     }
 
-    public static void aniadirPedidoMySQL(Connection conexion) {
-
-        Scanner sc = new Scanner(System.in);
+    public static void aniadirPedidoMySQL(Connection conexion, Scanner sc) {
 
         try {
 
@@ -152,6 +150,8 @@ public class mySQL {
 
             }
 
+            sc.nextLine();
+
         } catch (SQLException | ParseException e) {
 
             throw new RuntimeException(e);
@@ -160,9 +160,7 @@ public class mySQL {
 
     }
 
-    public static void aniadirClienteMySQL(Connection conexion) {
-
-        Scanner sc = new Scanner(System.in);
+    public static void aniadirClienteMySQL(Connection conexion, Scanner sc) {
 
         try {
 
@@ -237,6 +235,8 @@ public class mySQL {
 
             }
 
+            sc.nextLine();
+
         } catch (SQLException e) {
 
             throw new RuntimeException(e);
@@ -245,9 +245,7 @@ public class mySQL {
 
     }
 
-    public static void aniadirProductoMySQL(Connection conexion) {
-
-        Scanner sc = new Scanner(System.in);
+    public static void aniadirProductoMySQL(Connection conexion, Scanner sc) {
 
         try {
 
@@ -299,6 +297,8 @@ public class mySQL {
 
             }
 
+            sc.nextLine();
+
         } catch (SQLException e) {
 
             throw new RuntimeException(e);
@@ -307,9 +307,7 @@ public class mySQL {
 
     }
 
-    public static void modificarPrecioProducto(Connection conexion) {
-
-        Scanner sc = new Scanner(System.in);
+    public static void modificarPrecioProducto(Connection conexion, Scanner sc) {
 
         try {
 
@@ -347,6 +345,8 @@ public class mySQL {
                 System.out.println("No existe un producto con ese ID");
             }
 
+            sc.nextLine();
+
         } catch (SQLException e) {
 
             throw new RuntimeException(e);
@@ -355,9 +355,7 @@ public class mySQL {
 
     }
 
-    public static void buscarProductoPorProveedor (Connection conexion) {
-
-        Scanner sc = new Scanner(System.in);
+    public static void buscarProductoPorProveedor (Connection conexion, Scanner sc) {
 
         try {
 
@@ -376,6 +374,7 @@ public class mySQL {
             // Pedimos el ID del proveedor
             System.out.println("Introduce el ID del proveedor: ");
             int id_proveedor = sc.nextInt();
+            sc.nextLine();
 
             // Preparamos la sentencia de búsqueda
             String sql = "SELECT * FROM Productos WHERE Proveedor_ID = ?";
@@ -383,12 +382,21 @@ public class mySQL {
             pstmt.setInt(1, id_proveedor);
 
             // Ejecutamos la sentencia anteriormente preparada
-            int filas = pstmt.executeUpdate();
-            if (filas > 0) {
-                System.out.println("Precio actualizado correctamente");
-            } else {
-                System.out.println("No existe un producto con ese ID");
+            ResultSet rs = pstmt.executeQuery();
+            boolean encontrado = false;
+
+            while (rs.next()) {
+                encontrado = true;
+                System.out.println("ID: " + rs.getInt("Producto_ID") +
+                        ", Nombre: " + rs.getString("Nombre") +
+                        ", Precio: " + rs.getDouble("Precio"));
             }
+
+            if (!encontrado) {
+                System.out.println("No existen productos para ese proveedor.");
+            }
+
+            sc.nextLine();
 
         } catch (SQLException e) {
 
@@ -398,9 +406,7 @@ public class mySQL {
 
     }
 
-    public static void eliminarProducto(Connection conexion) {
-
-        Scanner sc = new Scanner(System.in);
+    public static void eliminarProducto(Connection conexion, Scanner sc) {
 
         try {
 
@@ -452,6 +458,8 @@ public class mySQL {
 
             }
 
+            sc.nextLine();
+
         } catch (SQLException e) {
 
             throw new RuntimeException(e);
@@ -460,9 +468,7 @@ public class mySQL {
 
     }
 
-    public static void modificarSalarioEmpleado (Connection conexion) {
-
-        Scanner sc = new Scanner(System.in);
+    public static void modificarSalarioEmpleado (Connection conexion, Scanner sc) {
 
         try {
 
@@ -470,7 +476,7 @@ public class mySQL {
 
             // Mostramos los empleados disponibles a modificar el salario
             Statement stmt = conexion.createStatement();
-            ResultSet empleados = stmt.executeQuery("SELECT Empleado_ID, Nombre, Salario FROM Empelados ORDER BY Empleado_ID");
+            ResultSet empleados = stmt.executeQuery("SELECT Empleado_ID, Nombre, Salario FROM Empleados ORDER BY Empleado_ID");
 
             while (empleados.next()) {
 
@@ -487,7 +493,7 @@ public class mySQL {
             double salario = sc.nextDouble();
 
             // Preparamos la sentencia para modificar el salario del empleado que hemos dicho
-            String sql = "UPDATE Empelados SET Salario = ? WHERE Empleado_ID = ?";
+            String sql = "UPDATE Empleados SET Salario = ? WHERE Empleado_ID = ?";
             PreparedStatement pstmt = conexion.prepareStatement(sql);
             pstmt.setDouble(1, salario);
             pstmt.setInt(2, id_empleado);
@@ -499,6 +505,8 @@ public class mySQL {
             } else {
                 System.out.println("No existe un producto con ese ID");
             }
+
+            sc.nextLine();
 
         } catch (SQLException e) {
 
