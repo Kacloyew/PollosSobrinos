@@ -123,6 +123,7 @@ public class MenuMySQL {
 
                 case 4:
 
+                    mySQL.modificarPrecioProducto(conexion);
                     break;
 
                 case 5:
