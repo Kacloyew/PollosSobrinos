@@ -108,33 +108,37 @@ public class MenuMySQL {
 
                 case 1:
 
-                    mySQL.aniadirPedidoMySQL(conexion);
+                    mySQL.aniadirPedidoMySQL(conexion, sc);
                     break;
 
                 case 2:
 
-                    mySQL.aniadirClienteMySQL(conexion);
+                    mySQL.aniadirClienteMySQL(conexion, sc);
                     break;
 
                 case 3:
 
-                    mySQL.aniadirProductoMySQL(conexion);
+                    mySQL.aniadirProductoMySQL(conexion, sc);
                     break;
 
                 case 4:
 
+                    mySQL.modificarPrecioProducto(conexion, sc);
                     break;
 
                 case 5:
 
+                    mySQL.buscarProductoPorProveedor(conexion, sc);
                     break;
 
                 case 6:
 
+                    mySQL.eliminarProducto(conexion, sc);
                     break;
 
                 case 7:
 
+                    mySQL.modificarSalarioEmpleado(conexion, sc);
                     break;
 
                 case 8:
@@ -241,6 +245,7 @@ public class MenuMySQL {
             }
 
         }
+
     }
 
 }
