@@ -363,6 +363,7 @@ public class mySQL {
 
             System.out.println("=== BUSCAR PRODUCTO ===");
 
+            // Mostramos la tabla Proveedores para tenerlos de referencia y posteriormente filtrar por producto
             Statement stmt = conexion.createStatement();
             ResultSet proveedores =  stmt.executeQuery("SELECT Proveedor_ID, Nombre FROM Proveedores");
 
@@ -382,6 +383,54 @@ public class mySQL {
             pstmt.setInt(1, id_proveedor);
 
             // Ejecutamos la sentencia anteriormente preparada
+            int filas = pstmt.executeUpdate();
+            if (filas > 0) {
+                System.out.println("Precio actualizado correctamente");
+            } else {
+                System.out.println("No existe un producto con ese ID");
+            }
+
+        } catch (SQLException e) {
+
+            throw new RuntimeException(e);
+
+        }
+
+    }
+
+    public static void modificarSalarioEmpleado (Connection conexion) {
+
+        Scanner sc = new Scanner(System.in);
+
+        try {
+
+            System.out.println("=== MODIFICAR SALARIO ===");
+
+            // Mostramos los empleados disponibles a modificar el salario
+            Statement stmt = conexion.createStatement();
+            ResultSet empleados = stmt.executeQuery("SELECT Empleado_ID, Nombre, Salario FROM Empelados ORDER BY Empleado_ID");
+
+            while (empleados.next()) {
+
+                System.out.println("   - ID: " + empleados.getInt("Empleado_ID") + ", Nombre: " + empleados.getString("Nombre") + ", Salario: " + empleados.getDouble("Salario"));
+
+            }
+
+            // Pedimos el empleado al que queremos modificar
+            System.out.println("Introduce el ID del empleado: ");
+            int id_empleado = sc.nextInt();
+
+            // Pedimos el nuevo salario de ese empelado
+            System.out.println("Introduce el nuevo Salario del empleado: ");
+            double salario = sc.nextDouble();
+
+            // Preparamos la sentencia para modificar el salario del empleado que hemos dicho
+            String sql = "UPDATE Empelados SET Salario = ? WHERE Empleado_ID = ?";
+            PreparedStatement pstmt = conexion.prepareStatement(sql);
+            pstmt.setDouble(1, salario);
+            pstmt.setInt(2, id_empleado);
+
+            // Ejecutamos la sentencia preparada con su checkeo de funcionamiento de filas.
             int filas = pstmt.executeUpdate();
             if (filas > 0) {
                 System.out.println("Precio actualizado correctamente");

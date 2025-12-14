@@ -137,6 +137,7 @@ public class MenuMySQL {
 
                 case 7:
 
+                    mySQL.modificarSalarioEmpleado(conexion);
                     break;
 
                 case 8:
