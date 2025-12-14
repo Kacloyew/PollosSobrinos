@@ -126,7 +126,7 @@ public class MenuOracle {
                     break;
 
                 case 6:
-
+                    Oracle.eliminarProducto(conexion, sc);
                     break;
 
                 case 7:
