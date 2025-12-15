@@ -658,10 +658,23 @@ public class mySQL {
             CallableStatement cstmt = conexion.prepareCall(sqlProcedure);
             cstmt.setInt(1, id_tienda);
 
-            // Ejecutamos la sentencia
-            cstmt.executeUpdate();
-            System.out.println("Búsqueda filtrada exitosamente.");
+            ResultSet rs = cstmt.executeQuery();
 
+            System.out.println("\n=== EMPLEADOS DE LA TIENDA " + id_tienda + " ===");
+
+            while (rs.next()) {
+
+                System.out.println(
+
+                        rs.getInt("Empleado_ID") + " | " +
+                                rs.getString("Nombre") + " | " +
+                                rs.getDouble("Salario")
+
+                );
+
+            }
+
+            rs.close();
             cstmt.close();
 
             sc.nextLine();
