@@ -668,7 +668,7 @@ public class mySQL {
 
                         rs.getInt("Empleado_ID") + " | " +
                                 rs.getString("Nombre") + " | " +
-                                rs.getDouble("Salario")
+                                rs.getDouble("Salario" + "\n")
 
                 );
 
