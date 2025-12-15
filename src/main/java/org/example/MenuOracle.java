@@ -236,7 +236,7 @@ public class MenuOracle {
         }
     }
 
-    public static void ejercutarProcedimientos(Connection conexion, Scanner sc) {
+    public static void ejecutarProcedimientos(Connection conexion, Scanner sc) {
 
         int opc = 0;
 
@@ -266,7 +266,7 @@ public class MenuOracle {
                     break;
 
                 case 2:
-
+                    Oracle.empleadosDeUnaTienda(conexion, sc);
                     break;
 
                 case 3:
