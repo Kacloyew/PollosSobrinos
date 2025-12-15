@@ -3,6 +3,8 @@ package org.example;
 import java.sql.Connection;
 import java.util.Scanner;
 
+
+
 public class MenuOracle {
 
     public static void mostrarMenu(Scanner sc) {
@@ -24,6 +26,7 @@ public class MenuOracle {
             System.out.println("2. Listar Tablas");
             System.out.println("3. Operar con las tablas");
             System.out.println("4. Mostrar metadatos de la BDD");
+            System.out.println("5. Ejecutar procedimientos");
             System.out.println("9. Volver al menú principal");
 
             try {
@@ -52,13 +55,8 @@ public class MenuOracle {
                     metadatosOracle(conexion, sc);
                     break;
 
-                case 6:
-                    break;
-
-                case 7:
-                    break;
-
-                case 8:
+                case 5:
+                    ejecutarProcedimientos(conexion, sc);
                     break;
 
                 case 9:
@@ -238,4 +236,50 @@ public class MenuOracle {
         }
     }
 
-}
+    public static void ejecutarProcedimientos(Connection conexion, Scanner sc) {
+
+        int opc = 0;
+
+        if (conexion == null) {
+            System.out.println("Error al conectar con Oracle");
+        }
+
+        while (opc != 3) {
+
+            System.out.println("===== Procedimientos Oracle =====");
+
+            System.out.println("1. Aumentar un salario dado por un Empleado_ID");
+            System.out.println("2. Buscar empleados por una Tienda_ID");
+            System.out.println("3. Volver");
+
+            try {
+                opc = Integer.parseInt(sc.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Número no válido");
+                continue;
+            }
+
+            switch (opc) {
+
+                case 1:
+                    Oracle.aumentarSalario(conexion, sc);
+                    break;
+
+                case 2:
+                    Oracle.empleadosDeUnaTienda(conexion, sc);
+                    break;
+
+                case 3:
+                    System.out.println("**** Retrocediendo ****");
+                    break;
+
+                default:
+                    System.out.println("Error, seleciona un número válido");
+                    break;
+            }
+
+        }
+    }
+    }
+
+

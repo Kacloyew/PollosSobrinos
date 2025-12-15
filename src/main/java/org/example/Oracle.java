@@ -41,7 +41,9 @@ public class Oracle {
 
     }
 
-    public static void aniadirPedidoOracle(Connection conexion, Scanner sc) {
+    public static void aniadirPedidoOracle(Connection conexion) {
+
+        Scanner sc = new Scanner(System.in);
 
         try {
 
@@ -155,7 +157,6 @@ public class Oracle {
                 System.out.println("Pedido cancelado.");
 
             }
-            sc.nextLine();
 
         } catch (SQLException | ParseException e) {
 
@@ -165,7 +166,9 @@ public class Oracle {
 
     }
 
-    public static void aniadirClienteOracle(Connection conexion, Scanner sc) {
+    public static void aniadirClienteOracle(Connection conexion) {
+
+        Scanner sc = new Scanner(System.in);
 
         try {
 
@@ -246,14 +249,15 @@ public class Oracle {
 
             }
 
-            sc.nextLine();
 
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static void aniadirProductoOracle(Connection conexion, Scanner sc) {
+    public static void aniadirProductoOracle(Connection conexion) {
+
+        Scanner sc = new Scanner(System.in);
 
         try {
 
@@ -311,218 +315,6 @@ public class Oracle {
                 System.out.println("Producto cancelado.");
 
             }
-
-            sc.nextLine();
-
-        } catch (SQLException e) {
-
-            throw new RuntimeException(e);
-
-        }
-
-    }
-    public static void modificarPrecioProducto(Connection conexion, Scanner sc) {
-
-        try {
-
-            System.out.println("=== MODIFICAR PRODUCTO ===");
-
-            // Mostrar los productos disponibles a modificar
-            Statement stmt = conexion.createStatement();
-            ResultSet productos = stmt.executeQuery("SELECT Producto_ID, Nombre FROM Productos ORDER BY Producto_ID");
-
-            while (productos.next()) {
-
-                System.out.println("   - ID: " + productos.getInt("Producto_ID") + ", Nombre: " + productos.getString("Nombre"));
-
-            }
-
-            // Pedir que producto modificar
-            System.out.println("Que producto quieres modificar: ");
-            int prodSelect = sc.nextInt();
-
-            // Pedir el nuevo precio del producto
-            System.out.println("Introduce el nuevo precio del producto: ");
-            double precio = sc.nextDouble();
-
-            // Preparamos la sentencia para actualizar el precio
-            String sql = "UPDATE Productos SET Precio = ? WHERE Producto_ID = ?";
-            PreparedStatement pstmt = conexion.prepareStatement(sql);
-            pstmt.setDouble(1, precio);
-            pstmt.setInt(2, prodSelect);
-
-            // Ejecutamos la sentencia anteriormente preparada
-            int filas = pstmt.executeUpdate();
-            if (filas > 0) {
-                System.out.println("Precio actualizado correctamente");
-            } else {
-                System.out.println("No existe un producto con ese ID");
-            }
-
-            sc.nextLine();
-
-        } catch (SQLException e) {
-
-            throw new RuntimeException(e);
-
-        }
-
-    }
-
-    public static void buscarProductoPorProveedor(Connection conexion, Scanner sc) {
-
-        try {
-
-            System.out.println("=== BUSCAR PRODUCTO POR PROVEEDOR ===");
-
-            //mostrar proveedores
-            Statement stmt = conexion.createStatement();
-            ResultSet proveedores = stmt.executeQuery("SELECT Proveedor_ID, Nombre FROM Proveedores");
-
-            while (proveedores.next()) {
-                System.out.println("  - ID: " + proveedores.getInt("Proveedor_ID")
-                        + ", Nombre: " + proveedores.getString("Nombre"));
-            }
-
-            //pedir ID proveedor
-            System.out.println("Introduce el ID del proveedor: ");
-            int idProveedor = sc.nextInt();
-
-            //limpiar el buffer
-            sc.nextLine();
-
-            //consulta de prodcutos
-            String sql = "SELECT Producto_ID, Nombre, Precio FROM Productos WHERE Proveedor_ID = ?";
-            PreparedStatement pstmt = conexion.prepareStatement(sql);
-            pstmt.setInt(1, idProveedor);
-
-            ResultSet rs = pstmt.executeQuery();
-
-            boolean hayResultados = false;
-
-            while (rs.next()) {
-                hayResultados = true;
-                System.out.println(
-                        "Producto ID: " + rs.getInt("Producto_ID") +
-                                ", Nombre: " + rs.getString("Nombre") +
-                                ", Precio: " + rs.getDouble("Precio")
-                );
-            }
-
-            if (!hayResultados) {
-                System.out.println("No hay productos para ese proveedor");
-            }
-
-            sc.nextLine();
-
-        }catch (Exception e){
-
-            throw new RuntimeException(e);
-
-        }
-
-    }
-
-    public static void eliminarProducto(Connection conexion, Scanner sc) {
-
-        try {
-
-            conexion.setAutoCommit(true); // para confirmar el DELETE
-            System.out.println("=== ELIMINAR PRODUCTO ===");
-
-            // Mostrar productos
-            Statement stmt = conexion.createStatement();
-            ResultSet rs = stmt.executeQuery(
-                    "SELECT Producto_ID, Nombre FROM Productos ORDER BY Producto_ID"
-            );
-
-            while (rs.next()) {
-                System.out.println("ID: " + rs.getInt("Producto_ID")
-                        + " | " + rs.getString("Nombre"));
-            }
-
-            // Pedimos el ID_Producto
-            System.out.print("ID del producto a eliminar: ");
-            int idProducto = sc.nextInt();
-
-            // Comprobar si hay algún pedido con ese producto
-            String sqlCheck = "SELECT 1 FROM Pedidos WHERE Producto_ID = ?";
-            PreparedStatement check = conexion.prepareStatement(sqlCheck);
-            check.setInt(1, idProducto);
-
-            ResultSet rsEliminar = check.executeQuery();
-
-            if (rsEliminar.next()) {
-
-                System.out.println("No se puede eliminar: tiene pedidos asociados");
-
-            } else {
-
-                String sqlDelete = "DELETE FROM Productos WHERE Producto_ID = ?";
-                PreparedStatement delete = conexion.prepareStatement(sqlDelete);
-                delete.setInt(1, idProducto);
-
-                int filas = delete.executeUpdate();
-                System.out.println("Filas afectadas: " + filas); // Depuración
-
-                if (filas > 0) {
-                    System.out.println("Producto eliminado");
-                } else {
-                    System.out.println("Producto no encontrado");
-
-                }
-
-            }
-
-            sc.nextLine();
-
-        } catch (SQLException e) {
-
-            throw new RuntimeException(e);
-
-        }
-
-    }
-
-    public static void modificarSalarioEmpleado (Connection conexion, Scanner sc) {
-
-        try {
-
-            System.out.println("=== MODIFICAR SALARIO ===");
-
-            // Mostramos los empleados disponibles a modificar el salario
-            Statement stmt = conexion.createStatement();
-            ResultSet empleados = stmt.executeQuery("SELECT Empleado_ID, Nombre, Salario FROM Empleados ORDER BY Empleado_ID");
-
-            while (empleados.next()) {
-                System.out.println("   - ID: " + empleados.getInt("Empleado_ID") +
-                        ", Nombre: " + empleados.getString("Nombre") +
-                        ", Salario: " + empleados.getDouble("Salario"));
-            }
-
-            // Pedimos el empleado al que queremos modificar
-            System.out.println("Introduce el ID del empleado: ");
-            int id_empleado = Integer.parseInt(sc.nextLine());
-
-            // Pedimos el nuevo salario de ese empelado
-            System.out.println("Introduce el nuevo Salario del empleado: ");
-            double salario = Double.parseDouble(sc.nextLine());
-
-            // Preparamos la sentencia para modificar el salario del empleado que hemos dicho
-            String sql = "UPDATE Empleados SET Salario = ? WHERE Empleado_ID = ?";
-            PreparedStatement pstmt = conexion.prepareStatement(sql);
-            pstmt.setDouble(1, salario);
-            pstmt.setInt(2, id_empleado);
-
-            // Ejecutamos la sentencia preparada con su checkeo de funcionamiento de filas.
-            int filas = pstmt.executeUpdate();
-            if (filas > 0) {
-                System.out.println("Salario actualizado correctamente");
-            } else {
-                System.out.println("No existe un empleado con ese ID");
-            }
-
-            sc.nextLine();
 
         } catch (SQLException e) {
 
