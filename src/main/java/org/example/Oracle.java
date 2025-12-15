@@ -533,10 +533,6 @@ public class Oracle {
 
     }
 
-    public static void ejecutarProcedimientos(Connection conexion, Scanner sc) {
-
-    }
-
     public static void listarTablasOracle(Connection conexion, int posicion) {
 
         switch (posicion) {
@@ -666,7 +662,7 @@ public class Oracle {
 
     public static void empleadosDeUnaTienda (Connection conexion, Scanner sc) {
 
-        String sqlProcedure = "{ call filtrar_empleados_tienda (?) }";
+        String sqlProcedure = "{ call filtrar_empleados_tienda (?, ?) }";
 
         try {
 
@@ -678,12 +674,22 @@ public class Oracle {
             CallableStatement cstmt = conexion.prepareCall(sqlProcedure);
             cstmt.setInt(1, id_tienda);
 
-            // Ejecutamos la sentencia
-            cstmt.executeUpdate();
-            System.out.println("Busqueda filtrada correctamente");
+        // Parámetro OUT (CURSOR)
+            cstmt.registerOutParameter(2, oracle.jdbc.OracleTypes.CURSOR);
 
+        // Ejecutar
+            cstmt.execute();
+
+        // Obtener el ResultSet
+            ResultSet rs = (ResultSet) cstmt.getObject(2);
+
+            while (rs.next()) {
+                System.out.println(rs.getInt("empleado_id") + " - " +
+                        rs.getString("nombre"));
+            }
+
+            rs.close();
             cstmt.close();
-
             sc.nextLine();
 
         } catch (SQLException e) {

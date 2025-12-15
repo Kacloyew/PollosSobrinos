@@ -3,7 +3,7 @@ package org.example;
 import java.sql.Connection;
 import java.util.Scanner;
 
-import static org.example.Oracle.ejecutarProcedimientos;
+
 
 public class MenuOracle {
 
