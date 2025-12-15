@@ -25,6 +25,7 @@ public class MenuMySQL {
             System.out.println("2. Listar Tablas");
             System.out.println("3. Operar con las tablas");
             System.out.println("4. Mostrar metadatos de la BDD");
+            System.out.println("5. Ejecutar procedimientos");
             System.out.println("9. Volver al menú principal");
 
             try {
@@ -52,13 +53,8 @@ public class MenuMySQL {
                     metadatosMySQL(conexion, sc);
                     break;
 
-                case 6:
-                    break;
-
-                case 7:
-                    break;
-
-                case 8:
+                case 5:
+                    ejecutarProcedimientos(conexion, sc);
                     break;
 
                 case 9:
@@ -233,6 +229,52 @@ public class MenuMySQL {
 
                 case 2:
                     metadatosMySQL.metadatosResultSet(conexion);
+                    break;
+
+                case 3:
+                    System.out.println("**** Retrocediendo ****");
+                    break;
+
+                default:
+                    System.out.println("Error, seleciona un número válido");
+                    break;
+            }
+
+        }
+
+    }
+
+    public static void ejecutarProcedimientos(Connection conexion, Scanner sc) {
+
+        int opc = 0;
+
+        if (conexion == null) {
+            System.out.println("Error al conectar con MySQL");
+        }
+
+        while (opc != 3) {
+
+            System.out.println("===== Procedimientos MySQL =====");
+
+            System.out.println("1. Aumentar un salario dado un Empleado_ID");
+            System.out.println("2. Buscar por los empleados de un Tienda_ID");
+            System.out.println("3. Volver");
+
+            try {
+                opc = Integer.parseInt(sc.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Número no válido");
+                continue;
+            }
+
+            switch (opc) {
+
+                case 1:
+                    mySQL.aumentarSalario(conexion, sc);
+                    break;
+
+                case 2:
+
                     break;
 
                 case 3:

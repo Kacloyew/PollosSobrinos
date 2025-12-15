@@ -607,6 +607,41 @@ public class mySQL {
 
     }
 
+    public static void aumentarSalario (Connection conexion, Scanner sc) {
+
+        String sqlProcedure = "{ call subida_salario_empleado (?, ?) }";
+
+        try {
+
+            // Imprimimos la tabla de
+            imprimirTabla(conexion, "Empleados", "SELECT * FROM Empleados");
+
+            // Recogemos los datos necesarios para ejecutar el procedimiento y pasarlo por parametro
+            System.out.println("Cuanto salario quieres aumentarle al empleado -> ");
+            double aumentoSalario = sc.nextDouble();
+
+            System.out.println("Dime el ID del empleado que quieres asignar -> ");
+            int id_empleado = sc.nextInt();
+
+            // Creamos la llamada al Procedure
+            CallableStatement cstmt = conexion.prepareCall(sqlProcedure);
+            cstmt.setInt(1, id_empleado);
+            cstmt.setDouble(2, aumentoSalario);
+
+            // Ejecutamos la sentencia
+            cstmt.executeUpdate();
+            System.out.println("Salario aumentado correctamente");
+
+            cstmt.close();
+
+        } catch (SQLException e) {
+
+            throw new RuntimeException(e);
+
+        }
+
+    }
+
     public static Connection conectar() {
 
         try {
