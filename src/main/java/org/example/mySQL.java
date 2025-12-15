@@ -668,11 +668,13 @@ public class mySQL {
 
                         rs.getInt("Empleado_ID") + " | " +
                                 rs.getString("Nombre") + " | " +
-                                rs.getDouble("Salario" + "\n")
+                                rs.getDouble("Salario")
 
                 );
 
             }
+
+            System.out.println();
 
             rs.close();
             cstmt.close();
