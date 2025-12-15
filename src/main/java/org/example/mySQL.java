@@ -609,6 +609,7 @@ public class mySQL {
 
     public static void aumentarSalario (Connection conexion, Scanner sc) {
 
+        // Llamada al procedimiento con dos parametros de entrada
         String sqlProcedure = "{ call subida_salario_empleado (?, ?) }";
 
         try {
@@ -632,8 +633,10 @@ public class mySQL {
             cstmt.executeUpdate();
             System.out.println("Salario aumentado correctamente");
 
+            // Cerramos el flujo
             cstmt.close();
 
+            // Limpiamos el búfer
             sc.nextLine();
 
         } catch (SQLException e) {
@@ -646,22 +649,27 @@ public class mySQL {
 
     public static void empleadosDeUnaTienda (Connection conexion, Scanner sc) {
 
+        // Llamada al procedimiento con un parametro
         String sqlProcedure = "{ call filtrar_empleados_tienda (?) }";
 
         try {
 
+            // Imprimimos las tiendas disponibles
             imprimirTabla(conexion, "Tiendas", "SELECT * FROM Tiendas");
 
+            // Pedimos la tienda que queremos filtrar
             System.out.println("Dime el ID de la tienda que quieres filtrar -> ");
             int id_tienda = sc.nextInt();
 
+            // Preparamos la sentencia de llamada con el parametro ingresado
             CallableStatement cstmt = conexion.prepareCall(sqlProcedure);
             cstmt.setInt(1, id_tienda);
 
+            // Recogemos el resultado del filtro
             ResultSet rs = cstmt.executeQuery();
 
+            // E imprimimos la tabla de Empleados de una Tienda específica
             System.out.println("\n=== EMPLEADOS DE LA TIENDA " + id_tienda + " ===");
-
             while (rs.next()) {
 
                 System.out.println(
@@ -674,11 +682,14 @@ public class mySQL {
 
             }
 
+            // Salto de linea
             System.out.println();
 
+            // Cerramos los flujos
             rs.close();
             cstmt.close();
 
+            // Limpiamos el búfer del Scanner
             sc.nextLine();
 
         } catch (SQLException e) {
