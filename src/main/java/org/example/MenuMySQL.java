@@ -274,7 +274,7 @@ public class MenuMySQL {
                     break;
 
                 case 2:
-
+                    mySQL.empleadosDeUnaTienda(conexion, sc);
                     break;
 
                 case 3:

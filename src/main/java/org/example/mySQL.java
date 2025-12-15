@@ -634,6 +634,38 @@ public class mySQL {
 
             cstmt.close();
 
+            sc.nextLine();
+
+        } catch (SQLException e) {
+
+            throw new RuntimeException(e);
+
+        }
+
+    }
+
+    public static void empleadosDeUnaTienda (Connection conexion, Scanner sc) {
+
+        String sqlProcedure = "{ call filtrar_empleados_tienda (?) }";
+
+        try {
+
+            imprimirTabla(conexion, "Tiendas", "SELECT * FROM Tiendas");
+
+            System.out.println("Dime el ID de la tienda que quieres filtrar -> ");
+            int id_tienda = sc.nextInt();
+
+            CallableStatement cstmt = conexion.prepareCall(sqlProcedure);
+            cstmt.setInt(1, id_tienda);
+
+            // Ejecutamos la sentencia
+            cstmt.executeUpdate();
+            System.out.println("Búsqueda filtrada exitosamente.");
+
+            cstmt.close();
+
+            sc.nextLine();
+
         } catch (SQLException e) {
 
             throw new RuntimeException(e);
