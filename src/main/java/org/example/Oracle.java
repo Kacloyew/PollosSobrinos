@@ -14,7 +14,7 @@ import java.util.Scanner;
 
 public class Oracle {
 
-    public static void crearTablas (Connection conexion) {
+    public static void crearTablas(Connection conexion) {
 
         ScriptRunner scriptRunner = new ScriptRunner(conexion);
 
@@ -321,6 +321,7 @@ public class Oracle {
         }
 
     }
+
     public static void modificarPrecioProducto(Connection conexion, Scanner sc) {
 
         try {
@@ -415,7 +416,7 @@ public class Oracle {
 
             sc.nextLine();
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
             throw new RuntimeException(e);
 
@@ -484,7 +485,7 @@ public class Oracle {
 
     }
 
-    public static void modificarSalarioEmpleado (Connection conexion, Scanner sc) {
+    public static void modificarSalarioEmpleado(Connection conexion, Scanner sc) {
 
         try {
 
@@ -532,7 +533,11 @@ public class Oracle {
 
     }
 
-    public static void listarTablasOracle (Connection conexion, int posicion) {
+    public static void ejecutarProcedimientos(Connection conexion, Scanner sc) {
+
+    }
+
+    public static void listarTablasOracle(Connection conexion, int posicion) {
 
         switch (posicion) {
 
@@ -621,17 +626,53 @@ public class Oracle {
 
     }
 
-        public static Connection conectar() {
+    public static void aumentarSalario(Connection conexion, Scanner sc) {
 
-         try {
+        String sqlProcedure = "{ call subida_salario_empleado (?, ?) }";
 
-             System.out.println("=====================");
-             System.out.println("Conectando con Oracle");
-             System.out.println();
+        try {
 
-             Class.forName("oracle.jdbc.driver.OracleDriver");
-             Connection conexion = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521/XE", "system", "1234");
-             return conexion;
+            // Imprimimos la tabla de
+            imprimirTabla(conexion, "Empleados", "SELECT * FROM Empleados");
+
+            // Recogemos los datos necesarios para ejecutar el procedimiento y pasarlo por parametro
+            System.out.println("Cuanto salario quieres aumentarle al empleado -> ");
+            double aumentoSalario = sc.nextDouble();
+
+            System.out.println("Dime el ID del empleado que quieres asignar -> ");
+            int id_empleado = sc.nextInt();
+
+            // Creamos la llamada al Procedure
+            CallableStatement cstmt = conexion.prepareCall(sqlProcedure);
+            cstmt.setInt(1, id_empleado);
+            cstmt.setDouble(2, aumentoSalario);
+
+
+            // Ejecutamos la sentencia
+            cstmt.executeUpdate();
+            System.out.println("Salario aumentado correctamente");
+
+            cstmt.close();
+
+        } catch (SQLException e) {
+
+            throw new RuntimeException(e);
+
+        }
+
+    }
+
+    public static Connection conectar() {
+
+        try {
+
+            System.out.println("=====================");
+            System.out.println("Conectando con Oracle");
+            System.out.println();
+
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            Connection conexion = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521/XE", "system", "1234");
+            return conexion;
 
         } catch (ClassNotFoundException | SQLException e) {
 
