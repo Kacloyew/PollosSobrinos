@@ -607,6 +607,99 @@ public class mySQL {
 
     }
 
+    public static void aumentarSalario (Connection conexion, Scanner sc) {
+
+        // Llamada al procedimiento con dos parametros de entrada
+        String sqlProcedure = "{ call subida_salario_empleado (?, ?) }";
+
+        try {
+
+            // Imprimimos la tabla de
+            imprimirTabla(conexion, "Empleados", "SELECT * FROM Empleados");
+
+            // Recogemos los datos necesarios para ejecutar el procedimiento y pasarlo por parametro
+            System.out.println("Cuanto salario quieres aumentarle al empleado -> ");
+            double aumentoSalario = sc.nextDouble();
+
+            System.out.println("Dime el ID del empleado que quieres asignar -> ");
+            int id_empleado = sc.nextInt();
+
+            // Creamos la llamada al Procedure
+            CallableStatement cstmt = conexion.prepareCall(sqlProcedure);
+            cstmt.setInt(1, id_empleado);
+            cstmt.setDouble(2, aumentoSalario);
+
+            // Ejecutamos la sentencia
+            cstmt.executeUpdate();
+            System.out.println("Salario aumentado correctamente");
+
+            // Cerramos el flujo
+            cstmt.close();
+
+            // Limpiamos el búfer
+            sc.nextLine();
+
+        } catch (SQLException e) {
+
+            throw new RuntimeException(e);
+
+        }
+
+    }
+
+    public static void empleadosDeUnaTienda (Connection conexion, Scanner sc) {
+
+        // Llamada al procedimiento con un parametro
+        String sqlProcedure = "{ call filtrar_empleados_tienda (?) }";
+
+        try {
+
+            // Imprimimos las tiendas disponibles
+            imprimirTabla(conexion, "Tiendas", "SELECT * FROM Tiendas");
+
+            // Pedimos la tienda que queremos filtrar
+            System.out.println("Dime el ID de la tienda que quieres filtrar -> ");
+            int id_tienda = sc.nextInt();
+
+            // Preparamos la sentencia de llamada con el parametro ingresado
+            CallableStatement cstmt = conexion.prepareCall(sqlProcedure);
+            cstmt.setInt(1, id_tienda);
+
+            // Recogemos el resultado del filtro
+            ResultSet rs = cstmt.executeQuery();
+
+            // E imprimimos la tabla de Empleados de una Tienda específica
+            System.out.println("\n=== EMPLEADOS DE LA TIENDA " + id_tienda + " ===");
+            while (rs.next()) {
+
+                System.out.println(
+
+                        rs.getInt("Empleado_ID") + " | " +
+                                rs.getString("Nombre") + " | " +
+                                rs.getDouble("Salario")
+
+                );
+
+            }
+
+            // Salto de linea
+            System.out.println();
+
+            // Cerramos los flujos
+            rs.close();
+            cstmt.close();
+
+            // Limpiamos el búfer del Scanner
+            sc.nextLine();
+
+        } catch (SQLException e) {
+
+            throw new RuntimeException(e);
+
+        }
+
+    }
+
     public static Connection conectar() {
 
         try {
