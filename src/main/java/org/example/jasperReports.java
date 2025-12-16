@@ -13,12 +13,12 @@ public class jasperReports {
     public static void listarClientesJP_SQL (Connection conexion) {
 
         // Asignamos la ruta de la plantilla, y la ruta de llegada de los informes
-        String Plantilla = "././resources/Plantillas/plantillaClientes.jrxml";
+        String Plantilla = "././resources/InformesJasperReports/Plantillas/plantillaClientes.jrxml";
 
         // Informes
-        String InformePDF = "././resources/Informes/plantillaDept.pdf";
-        String InformeXML = "././resources/Informes/plantillaDept.xml";
-        String InformeHTML = "././resources/Informes/plantillaDept.html";
+        String InformePDF = "././resources/InformesJasperReports/Informes/plantillaDept.pdf";
+        String InformeXML = "././resources/InformesJasperReports/Informes/plantillaDept.xml";
+        String InformeHTML = "././resources/InformesJasperReports/Informes/plantillaDept.html";
 
         // Recogemos la fecha actual
         LocalDate fecha =  LocalDate.now();
