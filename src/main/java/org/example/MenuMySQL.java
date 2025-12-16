@@ -325,7 +325,7 @@ public class MenuMySQL {
                     break;
 
                 case 2:
-
+                    jasperReports.listarPedidosJP_SQL(conexion);
                     break;
 
                 case 3:
