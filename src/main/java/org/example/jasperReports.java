@@ -34,7 +34,7 @@ public class jasperReports {
 
         try {
 
-            Path outputDir = Paths.get("informes"); // carpeta REAL
+            Path outputDir = Paths.get("Informes"); // carpeta REAL
 
             Files.createDirectories(outputDir);
 
@@ -65,7 +65,7 @@ public class jasperReports {
             System.out.println("Informes generados correctamente");
 
             // Esta linea nos permitira ver el informe por pantalla
-            JasperViewer.viewReport(Informe, false);
+            //JasperViewer.viewReport(Informe, false);
 
         } catch (JRException | IOException e) {
 
