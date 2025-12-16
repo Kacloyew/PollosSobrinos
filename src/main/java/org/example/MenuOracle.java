@@ -59,6 +59,10 @@ public class MenuOracle {
                     ejecutarProcedimientos(conexion, sc);
                     break;
 
+                case 6:
+                    ejecutarJasperReports(conexion, sc);
+                    break;
+
                 case 9:
                     System.out.println("Salir");
                     Oracle.desconectar(conexion);
@@ -280,6 +284,53 @@ public class MenuOracle {
 
         }
     }
+
+    public static void ejecutarJasperReports(Connection conexion, Scanner sc) {
+
+        int opc = 0;
+
+        if (conexion == null) {
+            System.out.println("Error al conectar con MySQL");
+        }
+
+        while (opc != 3) {
+
+            System.out.println("===== Informes MySQL Jasper =====");
+
+            System.out.println("1. Generar Informe para los Clientes");
+            System.out.println("2. Generar Informe para los Pedidos");
+            System.out.println("3. Volver");
+
+            try {
+                opc = Integer.parseInt(sc.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Número no válido");
+                continue;
+            }
+
+            switch (opc) {
+
+                case 1:
+                    jasperReports.listarClientesJP_SQL(conexion);
+                    break;
+
+                case 2:
+                    jasperReports.listarPedidosJP_SQL(conexion);
+                    break;
+
+                case 3:
+                    System.out.println("**** Retrocediendo ****");
+                    break;
+
+                default:
+                    System.out.println("Error, seleciona un número válido");
+                    break;
+            }
+
+        }
+
+    }
+
     }
 
 
