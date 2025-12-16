@@ -3,11 +3,16 @@ package org.example;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.view.JasperViewer;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 
 public class jasperReports {
 
@@ -15,11 +20,6 @@ public class jasperReports {
 
         // Asignamos la ruta de la plantilla, y la ruta de llegada de los informes
         String Plantilla = "InformesJasperReports/Plantillas/plantillaClientes.jrxml";
-
-        // Informes
-        String InformePDF = "InformesJasperReports/Informes/InformeClientes.pdf";
-        String InformeXML = "InformesJasperReports/Informes/InformeClientes.xml";
-        String InformeHTML = "InformesJasperReports/Informes/InformeClientes.html";
 
         // Recogemos la fecha actual
         LocalDate fecha =  LocalDate.now();
@@ -33,6 +33,15 @@ public class jasperReports {
         parametros.put("Fecha", fecha.getDayOfMonth() + " / " + fecha.getMonthValue() + " / " + fecha.getYear());
 
         try {
+
+            Path outputDir = Paths.get("informes"); // carpeta REAL
+
+            Files.createDirectories(outputDir);
+
+            String InformePDF  = outputDir.resolve("InformeClientes.pdf").toString();
+            String InformeHTML = outputDir.resolve("InformeClientes.html").toString();
+            String InformeXML  = outputDir.resolve("InformeClientes.xml").toString();
+
 
             // Vamos casteando la plantilla a JasperReports, y lo compilamos
             InputStream is = Thread.currentThread()
@@ -58,7 +67,7 @@ public class jasperReports {
             // Esta linea nos permitira ver el informe por pantalla
             JasperViewer.viewReport(Informe, false);
 
-        } catch (JRException e) {
+        } catch (JRException | IOException e) {
 
             System.err.println("Error al generar el Reporte de los clientes");
             throw new RuntimeException(e);
