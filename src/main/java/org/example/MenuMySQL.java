@@ -26,6 +26,7 @@ public class MenuMySQL {
             System.out.println("3. Operar con las tablas");
             System.out.println("4. Mostrar metadatos de la BDD");
             System.out.println("5. Ejecutar procedimientos");
+            System.out.println("6. Informes JasperReports");
             System.out.println("9. Volver al menú principal");
 
             try {
@@ -55,6 +56,10 @@ public class MenuMySQL {
 
                 case 5:
                     ejecutarProcedimientos(conexion, sc);
+                    break;
+
+                case 6:
+                    ejecutarJasperReports(conexion, sc);
                     break;
 
                 case 9:
@@ -275,6 +280,52 @@ public class MenuMySQL {
 
                 case 2:
                     mySQL.empleadosDeUnaTienda(conexion, sc);
+                    break;
+
+                case 3:
+                    System.out.println("**** Retrocediendo ****");
+                    break;
+
+                default:
+                    System.out.println("Error, seleciona un número válido");
+                    break;
+            }
+
+        }
+
+    }
+
+    public static void ejecutarJasperReports(Connection conexion, Scanner sc) {
+
+        int opc = 0;
+
+        if (conexion == null) {
+            System.out.println("Error al conectar con MySQL");
+        }
+
+        while (opc != 3) {
+
+            System.out.println("===== Informes MySQL Jasper =====");
+
+            System.out.println("1. Generar Informe para los Clientes");
+            System.out.println("2. Generar Informe para los Pedidos");
+            System.out.println("3. Volver");
+
+            try {
+                opc = Integer.parseInt(sc.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Número no válido");
+                continue;
+            }
+
+            switch (opc) {
+
+                case 1:
+                    jasperReports.listarClientesJP_SQL(conexion);
+                    break;
+
+                case 2:
+
                     break;
 
                 case 3:
