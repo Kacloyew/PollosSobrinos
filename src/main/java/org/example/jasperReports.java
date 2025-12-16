@@ -87,7 +87,7 @@ public class jasperReports {
         Map<String, Object> parametros = new HashMap<>();
 
         // Asignamos el valor a los parametros
-        parametros.put("Titulo", "LISTADO DE LOS PEDIDOS");
+        parametros.put("Titulo", "LISTADO DE LOS EMPLEADOS");
         parametros.put("Autor", "Jowy & Carmen");
         parametros.put("Fecha", fecha.getDayOfMonth() + " / " + fecha.getMonthValue() + " / " + fecha.getYear());
 
@@ -97,9 +97,9 @@ public class jasperReports {
 
             Files.createDirectories(outputDir);
 
-            String InformePDF  = outputDir.resolve("InformePedidos.pdf").toString();
-            String InformeHTML = outputDir.resolve("InformePedidos.html").toString();
-            String InformeXML  = outputDir.resolve("InformePedidos.xml").toString();
+            String InformePDF  = outputDir.resolve("InformeEmpleados.pdf").toString();
+            String InformeHTML = outputDir.resolve("InformeEmpleados.html").toString();
+            String InformeXML  = outputDir.resolve("InformeEmpleados.xml").toString();
 
 
             // Vamos casteando la plantilla a JasperReports, y lo compilamos
