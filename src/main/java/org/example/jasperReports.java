@@ -49,14 +49,14 @@ public class jasperReports {
             // Generamos el Informe a raiz del JasperReports, los parametros asignados y la conexion
             JasperPrint Informe =  JasperFillManager.fillReport(jasperReport, parametros, conexion);
 
-            // Esta linea nos permitira ver el informe por pantalla
-            JasperViewer.viewReport(Informe, false);
-
             JasperExportManager.exportReportToPdfFile(Informe, InformePDF);
             JasperExportManager.exportReportToHtmlFile(Informe, InformeHTML);
             JasperExportManager.exportReportToXmlFile(Informe, InformeXML, false);
 
             System.out.println("Informes generados correctamente");
+
+            // Esta linea nos permitira ver el informe por pantalla
+            JasperViewer.viewReport(Informe, false);
 
         } catch (JRException e) {
 
