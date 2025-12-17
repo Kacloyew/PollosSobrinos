@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports
+              http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="ListadoEmpleados"
+              pageWidth="900"
+              pageHeight="750"
+              orientation="Landscape">
+
+    <!-- PARÁMETROS QUE VIENEN DEL JAVA -->
+    <parameter name="Titulo" class="java.lang.String"/>
+    <parameter name="Autor" class="java.lang.String"/>
+    <parameter name="Fecha" class="java.lang.String"/>
+
+    <!-- CONSULTA SQL - CORREGIDA para Empleados -->
+    <queryString>
+        <![CDATA[
+        SELECT Empleado_ID, Nombre, Apellido, NIF_NIE, Telefono,
+               CorreoElectronico, Puesto, Salario, Tienda_ID
+        FROM Empleados
+        ORDER BY Empleado_ID
+        ]]>
+    </queryString>
+
+    <!-- CAMPOS - DEBEN COINCIDIR CON LA CONSULTA SQL -->
+    <field name="Empleado_ID" class="java.lang.Integer"/>
+    <field name="Nombre" class="java.lang.String"/>
+    <field name="Apellido" class="java.lang.String"/>
+    <field name="NIF_NIE" class="java.lang.String"/>
+    <field name="Telefono" class="java.lang.String"/>
+    <field name="CorreoElectronico" class="java.lang.String"/>
+    <field name="Puesto" class="java.lang.String"/>
+    <field name="Salario" class="java.lang.Double"/>
+    <field name="Tienda_ID" class="java.lang.Integer"/>
+
+    <!-- TÍTULO DEL INFORME -->
+    <title>
+        <band height="80">
+            <textField>
+                <reportElement x="20" y="10" width="860" height="40"/>
+                <textElement textAlignment="Center">
+                    <font size="24" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{Titulo}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="20" y="50" width="860" height="20"/>
+                <textElement textAlignment="Center"/>
+                <textFieldExpression>
+                    <![CDATA["Realizado por: " + $P{Autor} + " - Fecha: " + $P{Fecha}]]>
+                </textFieldExpression>
+            </textField>
+        </band>
+    </title>
+
+    <!-- ENCABEZADOS DE COLUMNAS -->
+    <columnHeader>
+        <band height="30">
+            <rectangle>
+                <reportElement x="20" y="0" width="860" height="25"/>
+                <graphicElement>
+                    <pen lineWidth="1.0"/>
+                </graphicElement>
+            </rectangle>
+            <staticText>
+                <reportElement x="25" y="5" width="60" height="15"/>
+                <textElement>
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[ID]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="90" y="5" width="100" height="15"/>
+                <textElement>
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[NOMBRE]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="195" y="5" width="100" height="15"/>
+                <textElement>
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[APELLIDO]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="300" y="5" width="90" height="15"/>
+                <textElement>
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[NIF/NIE]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="395" y="5" width="90" height="15"/>
+                <textElement>
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[TELÉFONO]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="490" y="5" width="140" height="15"/>
+                <textElement>
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[EMAIL]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="635" y="5" width="100" height="15"/>
+                <textElement>
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[PUESTO]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="740" y="5" width="80" height="15"/>
+                <textElement>
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[SALARIO]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="825" y="5" width="50" height="15"/>
+                <textElement>
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[TIENDA]]></text>
+            </staticText>
+        </band>
+    </columnHeader>
+
+    <!-- DETALLE (DATOS) -->
+    <detail>
+        <band height="25">
+            <textField>
+                <reportElement x="25" y="5" width="60" height="15"/>
+                <textFieldExpression><![CDATA[$F{Empleado_ID}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="90" y="5" width="100" height="15"/>
+                <textFieldExpression><![CDATA[$F{Nombre}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="195" y="5" width="100" height="15"/>
+                <textFieldExpression><![CDATA[$F{Apellido}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="300" y="5" width="90" height="15"/>
+                <textFieldExpression><![CDATA[$F{NIF_NIE}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="395" y="5" width="90" height="15"/>
+                <textFieldExpression><![CDATA[$F{Telefono}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="490" y="5" width="140" height="15"/>
+                <textFieldExpression><![CDATA[$F{CorreoElectronico}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="635" y="5" width="100" height="15"/>
+                <textFieldExpression><![CDATA[$F{Puesto}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="740" y="5" width="80" height="15"/>
+                <textElement>
+                    <font size="10"/>
+                </textElement>
+                <textFieldExpression>
+                    <![CDATA["€ " + new java.text.DecimalFormat("#,##0.00").format($F{Salario})]]>
+                </textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="825" y="5" width="50" height="15"/>
+                <textFieldExpression><![CDATA[$F{Tienda_ID}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+
+    <!-- PIE/PÁGINA -->
+    <pageFooter>
+        <band height="30">
+            <textField>
+                <reportElement x="20" y="5" width="400" height="15"/>
+                <textElement textAlignment="Left">
+                    <font size="10"/>
+                </textElement>
+                <textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de " + $V{PAGE_COUNT}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="480" y="5" width="400" height="15"/>
+                <textElement textAlignment="Right">
+                    <font size="10"/>
+                </textElement>
+                <textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+            </textField>
+        </band>
+    </pageFooter>
+
+    <!-- RESUMEN (AL FINAL) -->
+    <summary>
+        <band height="40">
+            <rectangle>
+                <reportElement x="20" y="0" width="860" height="25"/>
+                <graphicElement>
+                    <pen lineWidth="1.0"/>
+                </graphicElement>
+            </rectangle>
+            <textField>
+                <reportElement x="30" y="5" width="300" height="15"/>
+                <textElement textAlignment="Left">
+                    <font isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA["Total Empleados: " + $V{REPORT_COUNT}]]></textFieldExpression>
+            </textField>
+        </band>
+    </summary>
+</jasperReport>

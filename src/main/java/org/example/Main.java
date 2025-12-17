@@ -13,14 +13,21 @@ public class Main {
             System.out.println("==============================");
             System.out.println("Seleciona una base de datos: \n1. mySQL \n2. Oracle \n3. Salir del programa");
 
-            switch (opc = sc.nextInt()){
+            try {
+                opc = Integer.parseInt(sc.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Introduce un número válido");
+                continue;
+            }
+
+            switch (opc){
 
                 case 1:
-                    MenuMySQL.mostrarMenu();
+                    MenuMySQL.mostrarMenu(sc);
                     break;
 
                 case 2:
-                    MenuOracle.mostrarMenu();
+                    MenuOracle.mostrarMenu(sc);
                     break;
 
                 case 3:
