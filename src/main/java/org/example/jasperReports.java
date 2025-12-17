@@ -37,9 +37,9 @@ public class jasperReports {
 
             Files.createDirectories(outputDir);
 
-            String InformePDF  = outputDir.resolve("InformeClientes.pdf").toString();
-            String InformeHTML = outputDir.resolve("InformeClientes.html").toString();
-            String InformeXML  = outputDir.resolve("InformeClientes.xml").toString();
+            String InformePDF  = outputDir.resolve("InformeClientesMySQL.pdf").toString();
+            String InformeHTML = outputDir.resolve("InformeClientesMySQL.html").toString();
+            String InformeXML  = outputDir.resolve("InformeClientesMySQL.xml").toString();
 
 
             // Vamos casteando la plantilla a JasperReports, y lo compilamos
@@ -97,9 +97,9 @@ public class jasperReports {
 
             Files.createDirectories(outputDir);
 
-            String InformePDF  = outputDir.resolve("InformeEmpleados.pdf").toString();
-            String InformeHTML = outputDir.resolve("InformeEmpleados.html").toString();
-            String InformeXML  = outputDir.resolve("InformeEmpleados.xml").toString();
+            String InformePDF  = outputDir.resolve("InformeEmpleadosMySQL.pdf").toString();
+            String InformeHTML = outputDir.resolve("InformeEmpleadosMySQL.html").toString();
+            String InformeXML  = outputDir.resolve("InformeEmpleadosMySQL.xml").toString();
 
 
             // Vamos casteando la plantilla a JasperReports, y lo compilamos
@@ -135,4 +135,104 @@ public class jasperReports {
 
     }
 
-}
+        public static void listarClientesJP_Oracle(Connection conexion) {
+
+            String plantilla = "InformesJasperReports/Plantillas/plantillaClientes.jrxml";
+
+            LocalDate fecha = LocalDate.now();
+
+            Map<String, Object> parametros = new HashMap<>();
+            parametros.put("Titulo", "LISTADO DE LOS CLIENTES");
+            parametros.put("Autor", "Jowy & Carmen");
+            parametros.put("Fecha",
+                    fecha.getDayOfMonth() + " / " +
+                            fecha.getMonthValue() + " / " +
+                            fecha.getYear());
+
+            try {
+
+                Path outputDir = Paths.get("Informes");
+                Files.createDirectories(outputDir);
+
+                String informePDF  = outputDir.resolve("InformeClientesOracle.pdf").toString();
+                String informeHTML = outputDir.resolve("InformeClientesOracle.html").toString();
+                String informeXML  = outputDir.resolve("InformeClientesOracle.xml").toString();
+
+                InputStream is = Thread.currentThread()
+                        .getContextClassLoader()
+                        .getResourceAsStream(plantilla);
+
+                if (is == null) {
+                    throw new RuntimeException("No se encontró la plantilla JRXML");
+                }
+
+                JasperReport jasperReport =
+                        JasperCompileManager.compileReport(is);
+
+                JasperPrint informe =
+                        JasperFillManager.fillReport(jasperReport, parametros, conexion);
+
+                JasperExportManager.exportReportToPdfFile(informe, informePDF);
+                JasperExportManager.exportReportToHtmlFile(informe, informeHTML);
+                JasperExportManager.exportReportToXmlFile(informe, informeXML, false);
+
+                System.out.println("Informes de clientes generados correctamente");
+
+            } catch (JRException | IOException e) {
+                System.err.println("Error al generar el reporte de clientes");
+                throw new RuntimeException(e);
+            }
+        }
+
+        public static void listarPedidosJP_Oracle(Connection conexion) {
+
+            String plantilla = "InformesJasperReports/Plantillas/plantillaEmpleados.jrxml";
+
+            LocalDate fecha = LocalDate.now();
+
+            Map<String, Object> parametros = new HashMap<>();
+            parametros.put("Titulo", "LISTADO DE LOS EMPLEADOS");
+            parametros.put("Autor", "Jowy & Carmen");
+            parametros.put("Fecha",
+                    fecha.getDayOfMonth() + " / " +
+                            fecha.getMonthValue() + " / " +
+                            fecha.getYear());
+
+            try {
+
+                Path outputDir = Paths.get("Informes");
+                Files.createDirectories(outputDir);
+
+                String informePDF  = outputDir.resolve("InformeEmpleadosOracle.pdf").toString();
+                String informeHTML = outputDir.resolve("InformeEmpleadosOracle.html").toString();
+                String informeXML  = outputDir.resolve("InformeEmpleadosOracle.xml").toString();
+
+                InputStream is = Thread.currentThread()
+                        .getContextClassLoader()
+                        .getResourceAsStream(plantilla);
+
+                if (is == null) {
+                    throw new RuntimeException("No se encontró la plantilla JRXML");
+                }
+
+                JasperReport jasperReport =
+                        JasperCompileManager.compileReport(is);
+
+                JasperPrint informe =
+                        JasperFillManager.fillReport(jasperReport, parametros, conexion);
+
+                JasperExportManager.exportReportToPdfFile(informe, informePDF);
+                JasperExportManager.exportReportToHtmlFile(informe, informeHTML);
+                JasperExportManager.exportReportToXmlFile(informe, informeXML, false);
+
+                System.out.println("Informes de empleados generados correctamente");
+
+            } catch (JRException | IOException e) {
+                System.err.println("Error al generar el reporte de empleados");
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+
+

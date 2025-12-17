@@ -27,6 +27,7 @@ public class MenuOracle {
             System.out.println("3. Operar con las tablas");
             System.out.println("4. Mostrar metadatos de la BDD");
             System.out.println("5. Ejecutar procedimientos");
+            System.out.println("6. Informes JasperReports");
             System.out.println("9. Volver al menú principal");
 
             try {
@@ -311,11 +312,11 @@ public class MenuOracle {
             switch (opc) {
 
                 case 1:
-                    jasperReports.listarClientesJP_SQL(conexion);
+                    jasperReports.listarClientesJP_Oracle(conexion);
                     break;
 
                 case 2:
-                    jasperReports.listarPedidosJP_SQL(conexion);
+                    jasperReports.listarPedidosJP_Oracle(conexion);
                     break;
 
                 case 3:
